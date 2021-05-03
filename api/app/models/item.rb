@@ -8,6 +8,7 @@ class Item < ApplicationRecord
 
   def serialize
     {
+      id: id,
       name: name,
       unit: unit,
       base_quantity: base_quantity,

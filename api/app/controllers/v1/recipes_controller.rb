@@ -6,7 +6,7 @@ module V1
     before_action :set_recipe, except: [:create, :index]
 
     def index
-      recipes = Recipe.all.each(&:serialize)
+      recipes = Recipe.all.to_a.map(&:serialize_basic)
       api_success(recipes: recipes)
     end
 
@@ -21,7 +21,7 @@ module V1
     end
 
     def show
-      api_success(recipe: @recipe)
+      api_success(recipe: @recipe.serialize)
     end
 
     def update
@@ -34,7 +34,7 @@ module V1
 
     def destroy
       if @recipe.destroy
-        api_success(recipe: @recipe)
+        api_success(recipe: @recipe.serialize)
       else
         api_failure("Could not destroy recipe: #{@recipe.errors}")
       end
