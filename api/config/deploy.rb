@@ -1,6 +1,6 @@
 server "165.227.226.26", port: 3000, roles: [:web, :app, :db], primary: true
 
-set :repo_url,        'https://github.com/codebymatt/carson.git'
+set :repo_url,        'git@github.com:codebymatt/carson.git'
 set :application,     'carson'
 set :user,            'carson'
 set :puma_threads,    [4, 16]
