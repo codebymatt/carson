@@ -1,4 +1,4 @@
-server ENV["production_ip"], port: 3000, roles: [:web, :app, :db], primary: true
+server "165.227.226.26", port: 3000, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'https://github.com/codebymatt/carson.git'
 set :application,     'carson'
