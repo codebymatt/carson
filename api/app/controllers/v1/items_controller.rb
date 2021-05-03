@@ -16,7 +16,7 @@ module V1
       if @item.save
         api_success(item: @item.serialize)
       else
-        api_failure(@item.errors)
+        api_failure(errors: @item.errors)
       end
     end
 
@@ -28,7 +28,7 @@ module V1
       if @item.update(allowed_params)
         api_success(item: @item)
       else
-        api_failure("Could not update item: #{@item.errors}")
+        api_failure(errors: @item.errors)
       end
     end
 
@@ -36,7 +36,7 @@ module V1
       if @item.destroy
         api_success(item: @item)
       else
-        api_failure("Could not destroy item: #{@item.errors}")
+        api_failure(errors: @item.errors)
       end
     end
 

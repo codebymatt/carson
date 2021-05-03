@@ -17,7 +17,7 @@ module V1
       if recipe_item.save
         api_success(recipe_item: recipe_item.serialize)
       else
-        api_failure("Could not add item: #{recipe_item.errors}")
+        api_failure(errors: recipe_item.errors)
       end
     end
 
@@ -29,7 +29,7 @@ module V1
       if @recipe_item.update(allowed_params)
         api_success(recipe_item: @recipe_item.serialize)
       else
-        api_failure("Could not update recipe item: #{@recipe_item.errors}")
+        api_failure(errors: @recipe_item.errors)
       end
     end
 
@@ -37,7 +37,7 @@ module V1
       if @recipe_item.destroy
         api_success(recipe_item: @recipe_item.serialize)
       else
-        api_failure("Could not destroy recipe item: #{@recipe_item.errors}")
+        api_failure(errors: @recipe_item.errors)
       end
     end
 
