@@ -6,8 +6,13 @@ Rails.application.routes.draw do
     get "/healthcheck", to: "health_check#health_check", as: :healthcheck, only: [:get]
 
     resources :items, except: [:new, :edit]
+
     resources :recipes, except: [:new, :edit] do
       resources :recipe_items, except: [:new, :edit]
+    end
+
+    resources :lists, except: [:new, :edit] do
+      resources :list_items, except: [:new, :edit]
     end
   end
 end
