@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { PlusIcon } from "@primer/octicons-react";
 
-function App() {
+import AddItem from "./components/AddItem";
+
+import "./App.css";
+
+const App = () => {
+  const [addingItem, setAddingItem] = useState(true);
+
+  const toggleItemAddition = () => setAddingItem(!addingItem);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PageWrapper>
+      :
+      <InnerWrapper>
+        <Header>
+          <Logo>CARSON</Logo>
+          <ClickableIcon onClick={() => toggleItemAddition()}>
+            <Plus size="medium" label="Add item" />
+          </ClickableIcon>
+        </Header>
+        {addingItem && <AddItem />}
+      </InnerWrapper>
+    </PageWrapper>
   );
-}
+};
 
 export default App;
+
+const PageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+const InnerWrapper = styled.div`
+  width: 40rem;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 1rem;
+`;
+
+const Logo = styled.h1``;
+
+const Plus = styled(PlusIcon)`
+  cursor: pointer;
+`;
+
+const ClickableIcon = styled.div``;
