@@ -6,7 +6,7 @@ module V1
     before_action :set_item, except: [:create, :index]
 
     def index
-      items = Item.all.to_a.map(&:serialize)
+      items = Item.order(created_at: :desc).all.to_a.map(&:serialize)
       api_success(items: items)
     end
 

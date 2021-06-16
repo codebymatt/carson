@@ -1,28 +1,22 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { PlusIcon } from "@primer/octicons-react";
-
-import AddItem from "./components/AddItem";
+import axios from "axios";
 
 import "./App.css";
+import Items from "./components/Items";
 
 const App = () => {
-  const [addingItem, setAddingItem] = useState(true);
+  const [screen, setScreen] = useState("recipes");
 
-  const toggleItemAddition = () => setAddingItem(!addingItem);
+  axios.defaults.baseURL = "http://localhost:3000";
+  axios.defaults.headers.post["Content-Type"] = "application/json";
+  const Recipes = () => {};
+
+  const LoadedComponent = screen == "recipes" ? Items : Recipes;
 
   return (
     <PageWrapper>
-      :
-      <InnerWrapper>
-        <Header>
-          <Logo>CARSON</Logo>
-          <ClickableIcon onClick={() => toggleItemAddition()}>
-            <Plus size="medium" label="Add item" />
-          </ClickableIcon>
-        </Header>
-        {addingItem && <AddItem />}
-      </InnerWrapper>
+      <LoadedComponent setScreen={setScreen} />
     </PageWrapper>
   );
 };
@@ -34,23 +28,3 @@ const PageWrapper = styled.div`
   justify-content: center;
   width: 100%;
 `;
-
-const InnerWrapper = styled.div`
-  width: 40rem;
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  margin-top: 1rem;
-`;
-
-const Logo = styled.h1``;
-
-const Plus = styled(PlusIcon)`
-  cursor: pointer;
-`;
-
-const ClickableIcon = styled.div``;
