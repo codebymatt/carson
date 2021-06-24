@@ -4,19 +4,23 @@ import axios from "axios";
 
 import "./App.css";
 import Items from "./components/Items";
+import Recipes from "./components/Recipes";
 
 const App = () => {
-  const [screen, setScreen] = useState("recipes");
-
   axios.defaults.baseURL = "http://localhost:3000";
   axios.defaults.headers.post["Content-Type"] = "application/json";
-  const Recipes = () => {};
 
-  const LoadedComponent = screen == "recipes" ? Items : Recipes;
+  const [page, setPage] = useState("items");
+
+  const LoadedComponent = page == "recipes" ? Recipes : Items;
+  const togglePage = () => {
+    const newPage = page == "recipes" ? "items" : "recipes";
+    setPage(newPage);
+  };
 
   return (
     <PageWrapper>
-      <LoadedComponent setScreen={setScreen} />
+      <LoadedComponent currentPage={page} togglePage={togglePage} />
     </PageWrapper>
   );
 };

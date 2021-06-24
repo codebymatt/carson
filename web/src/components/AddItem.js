@@ -34,7 +34,7 @@ const unitOptions = baseUnits.map((unit) => {
   };
 });
 
-const AddItem = ({ addItemToList }) => {
+const AddItem = ({ toggleItemAddition, addItemToList }) => {
   const [quantity, setQuantity] = useState("");
   const [baseUnit, setBaseUnit] = useState("");
   const [itemName, setItemName] = useState("");
@@ -98,7 +98,7 @@ const AddItem = ({ addItemToList }) => {
       </InputContainer>
       <ButtonContainer>
         <ActionButton text="Add" onClick={saveItem} />
-        <SecondaryButton text="Cancel" onClick={resetInputs} />
+        <SecondaryButton text="Cancel" onClick={toggleItemAddition} />
       </ButtonContainer>
     </OuterWrapper>
   );

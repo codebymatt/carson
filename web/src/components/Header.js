@@ -1,15 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-import { PlusIcon } from "@primer/octicons-react";
+import { FiPlus, FiBookOpen, FiList } from "react-icons/fi";
 
-const Header = ({ addFunction }) => {
+import Icon from "./shared/Icon";
+
+const Header = ({
+  currentPage = "items",
+  togglePage,
+  addFunction,
+}) => {
+  const NavIcon = currentPage == "recipes" ? FiList : FiBookOpen;
+  const navLabel = currentPage == "recipes" ? "Recipes" : "Items";
+
   return (
     <HeaderWrapper>
       <Logo>CARSON</Logo>
-      <ClickableIcon onClick={() => addFunction()}>
-        <Plus size="medium" label="Add item" />
-      </ClickableIcon>
+      <IconContainer>
+        <IconWrapper>
+          <Icon
+            icon={<NavIcon />}
+            size="medium"
+            label={navLabel}
+            handleFunc={togglePage}
+          />
+        </IconWrapper>
+        <IconWrapper>
+          <Icon
+            icon={<FiPlus />}
+            size="medium"
+            label="Add item"
+            handleFunc={addFunction}
+          />
+        </IconWrapper>
+      </IconContainer>
     </HeaderWrapper>
   );
 };
@@ -30,8 +54,12 @@ const Logo = styled.h1`
   }
 `;
 
-const Plus = styled(PlusIcon)`
-  cursor: pointer;
+const IconContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
-const ClickableIcon = styled.div``;
+const IconWrapper = styled.div`
+  margin-left: 1rem;
+`;

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { TrashIcon } from "@primer/octicons-react";
+import { FiTrash } from "react-icons/fi";
 
 import Card from "./shared/Card";
 import axios from "axios";
@@ -23,7 +23,7 @@ const ItemList = ({ items, deleteItemFromList }) => {
         <Item>
           <ItemName>{item.full_description}</ItemName>
           <IconWrapper onClick={() => deleteItem(item)}>
-            <DeleteIcon></DeleteIcon>
+            <DeleteIcon size="20px"></DeleteIcon>
           </IconWrapper>
         </Item>
       ))}
@@ -36,7 +36,7 @@ export default ItemList;
 const ItemWrapper = styled.div``;
 
 const Item = styled(Card)`
-  padding: 1.2rem 1rem;
+  padding: 0rem 1rem;
   margin-top: 1rem;
   background-color: white;
   display: flex;
@@ -49,6 +49,6 @@ const ItemName = styled.p``;
 
 const IconWrapper = styled.div``;
 
-const DeleteIcon = styled(TrashIcon)`
+const DeleteIcon = styled(FiTrash)`
   cursor: pointer;
 `;

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+import { InnerPageWrapper } from "./shared/Wrappers";
+
 import AddItem from "./AddItem";
 import Header from "./Header";
 import ItemList from "./ItemList";
 
-import { InnerPageWrapper } from "./shared/Wrappers";
-
-const Items = () => {
-  const [addingItem, setAddingItem] = useState(true);
+const Items = ({ togglePage, currentPage }) => {
+  const [addingItem, setAddingItem] = useState(false);
   const [items, setItems] = useState([]);
 
   const addItemToList = (item) => setItems([item, ...items]);
@@ -30,12 +30,22 @@ const Items = () => {
       })
       .catch((error) => console.log(error));
   }, []);
+
   const toggleItemAddition = () => setAddingItem(!addingItem);
 
   return (
     <InnerPageWrapper>
-      <Header addFunction={toggleItemAddition} />
-      {addingItem && <AddItem addItemToList={addItemToList} />}
+      <Header
+        currentPage={currentPage}
+        togglePage={togglePage}
+        addFunction={toggleItemAddition}
+      />
+      {addingItem && (
+        <AddItem
+          addItemToList={addItemToList}
+          toggleItemAddition={toggleItemAddition}
+        />
+      )}
       <ItemList
         items={items}
         deleteItemFromList={deleteItemFromList}
