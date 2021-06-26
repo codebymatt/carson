@@ -5,7 +5,7 @@ require "rails_helper"
 describe V1::ItemsController, type: :request do
   context "when creating an item" do
     context "with valid params" do
-      let(:params) { {item: {name: "Tomato", unit: "whole", "base_quantity": 1}} }
+      let(:params) { {item: {name: "Tomato"}} }
 
       before { post "/v1/items.json", params: params }
 
@@ -16,7 +16,7 @@ describe V1::ItemsController, type: :request do
     end
 
     context "with invalid params" do
-      let(:params) { {item: {unit: "whole", "base_quantity": 1}} }
+      let(:params) { {item: {unit: "whole"}} }
 
       before { post "/v1/items.json", params: params }
 
@@ -89,8 +89,8 @@ describe V1::ItemsController, type: :request do
     end
 
     context "with invalid params" do
-      let(:tomato_item) { create(:item, base_quantity: 2) }
-      let(:params) { {item: {base_quantity: -1}} }
+      let(:tomato_item) { create(:item, name: "Tomatoes") }
+      let(:params) { {item: {name: nil}} }
 
       before { put "/v1/items/#{tomato_item.id}.json", params: params }
 
@@ -99,7 +99,7 @@ describe V1::ItemsController, type: :request do
       end
 
       it "doesn't update the item" do
-        expect(tomato_item.reload.base_quantity).to eq(2)
+        expect(tomato_item.reload.name).to eq("Tomatoes")
       end
     end
   end

@@ -7,7 +7,5 @@ FactoryBot.define do
 
   factory :item do
     name { generate(:vegetable) }
-    unit { "whole" }
-    base_quantity { 1 }
   end
 end

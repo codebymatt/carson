@@ -4,12 +4,12 @@ require "rails_helper"
 
 describe V1::RecipeItemsController, type: :request do
   let(:recipe) { create(:recipe, name: "Watermelon Salad") }
-  let(:watermelon_item) { create(:item, name: "Watermelon", unit: "whole", base_quantity: 1) }
+  let(:watermelon_item) { create(:item, name: "Watermelon") }
 
   context "when creating a recipe item" do
     context "with valid params" do
       let(:params) do
-        {recipe_item: {multiplier: 0.25, description: "Chopped", item_id: watermelon_item.id}}
+        {recipe_item: {quantity: 0.5, unit: "whole", item_id: watermelon_item.id}}
       end
 
       before { post "/v1/recipes/#{recipe.id}/recipe_items.json", params: params }
@@ -22,7 +22,11 @@ describe V1::RecipeItemsController, type: :request do
 
     context "with invalid params" do
       let(:params) do
-        {recipe_item: {multiplier: -1, description: "Chopped", item_id: watermelon_item.id}}
+        {
+          recipe_item: {
+            quantity: -1, unit: "whole", description: "Chopped", item_id: watermelon_item.id
+          }
+        }
       end
 
       before { post "/v1/recipes/#{recipe.id}/recipe_items.json", params: params }
@@ -85,25 +89,27 @@ describe V1::RecipeItemsController, type: :request do
   describe "when updating a recipe item" do
     context "with valid params" do
       let(:recipe_item) { create(:recipe_item) }
-      let(:params) { {recipe_item: {multiplier: 25}} }
+      let(:params) { {recipe_item: {quantity: 5}} }
       let(:update_url) { "/v1/recipes/#{recipe_item.recipe_id}/recipe_items/#{recipe_item.id}.json" }
 
       before { put update_url, params: params }
 
       it "succeeds" do
         expect(response).to have_http_status :ok
-        expect(recipe_item.reload.multiplier).to eq(25)
+        expect(recipe_item.reload.quantity).to eq(5)
       end
 
       it "returns the updated recipe item" do
-        expect(json_body.recipe_item["multiplier"]).to eq(params[:recipe_item][:multiplier])
+        expect(json_body.recipe_item["quantity"]).to eq(params[:recipe_item][:quantity])
       end
     end
 
     context "with invalid params" do
-      let(:recipe_item) { create(:recipe_item, multiplier: 2) }
-      let(:params) { {recipe_item: {multiplier: -1}} }
-      let(:update_url) { "/v1/recipes/#{recipe_item.recipe_id}/recipe_items/#{recipe_item.id}.json" }
+      let(:recipe_item) { create(:recipe_item, quantity: 2) }
+      let(:params) { {recipe_item: {quantity: -1}} }
+      let(:update_url) do
+        "/v1/recipes/#{recipe_item.recipe_id}/recipe_items/#{recipe_item.id}.json"
+      end
 
       before { put update_url, params: params }
 
@@ -112,7 +118,7 @@ describe V1::RecipeItemsController, type: :request do
       end
 
       it "doesn't update the recipe item" do
-        expect(recipe_item.reload.multiplier).to eq(2)
+        expect(recipe_item.reload.quantity).to eq(2)
       end
     end
   end

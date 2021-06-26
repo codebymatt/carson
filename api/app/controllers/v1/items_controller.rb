@@ -43,7 +43,7 @@ module V1
     private
 
     def allowed_params
-      params.require(:item).permit(:name, :unit, :base_quantity)
+      params.require(:item).permit(:name)
     end
 
     def set_item

@@ -44,7 +44,7 @@ module V1
     private
 
     def allowed_params
-      params.require(:recipe_item).permit(:multiplier, :description, :item_id)
+      params.require(:recipe_item).permit(:unit, :quantity, :description, :item_id)
     end
 
     def set_recipe_item
