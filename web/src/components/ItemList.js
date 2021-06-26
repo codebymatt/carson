@@ -4,6 +4,7 @@ import { FiTrash } from "react-icons/fi";
 
 import Card from "./shared/Card";
 import axios from "axios";
+import Icon from "./shared/Icon";
 
 const ItemList = ({ items, deleteItemFromList }) => {
   const deleteItem = (item) => {
@@ -20,11 +21,14 @@ const ItemList = ({ items, deleteItemFromList }) => {
   return (
     <ItemWrapper>
       {items.map((item) => (
-        <Item>
-          <ItemName>{item.full_description}</ItemName>
-          <IconWrapper onClick={() => deleteItem(item)}>
-            <DeleteIcon size="20px"></DeleteIcon>
-          </IconWrapper>
+        <Item key={item.id}>
+          <ItemName>{item.name}</ItemName>
+          <Icon
+            icon={<FiTrash />}
+            label="Delete item"
+            size="small"
+            handleFunc={() => deleteItem(item)}
+          />
         </Item>
       ))}
     </ItemWrapper>
@@ -46,9 +50,3 @@ const Item = styled(Card)`
 `;
 
 const ItemName = styled.p``;
-
-const IconWrapper = styled.div``;
-
-const DeleteIcon = styled(FiTrash)`
-  cursor: pointer;
-`;

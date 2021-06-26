@@ -70,8 +70,6 @@ const LabelledInput = ({ label, component }) => {
   );
 };
 
-// const handleOnChange = (updateFunc) => {};
-
 const InputWrapper = styled.div``;
 
 const Label = styled.h4`

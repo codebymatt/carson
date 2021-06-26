@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
 import { InnerPageWrapper } from "./shared/Wrappers";
-
 import AddItem from "./AddItem";
 import Header from "./Header";
 import ItemList from "./ItemList";
 
-const Items = ({ togglePage, currentPage }) => {
+const Items = ({ togglePage, currentPage, items, setItems }) => {
   const [addingItem, setAddingItem] = useState(false);
-  const [items, setItems] = useState([]);
 
   const addItemToList = (item) => setItems([item, ...items]);
 
@@ -21,15 +18,6 @@ const Items = ({ togglePage, currentPage }) => {
       setItems(updatedItems);
     }
   };
-
-  useEffect(() => {
-    axios
-      .get("/v1/items.json")
-      .then((response) => {
-        setItems(response.data.items);
-      })
-      .catch((error) => console.log(error));
-  }, []);
 
   const toggleItemAddition = () => setAddingItem(!addingItem);
 

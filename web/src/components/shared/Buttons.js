@@ -33,7 +33,8 @@ const defaultButtonStyles = css`
   padding: 1rem 2rem;
   margin: 0;
   text-decoration: none;
-  background: #0069ed;
+  // background: #0069ed; // Blue
+  background: black;
   color: #ffffff;
   font-family: sans-serif;
   font-size: 1rem;
@@ -55,12 +56,13 @@ const StyledActionButton = styled.button`
 const StyledSecondaryButton = styled.button`
   ${defaultButtonStyles}
   background-color: #ffffff;
-  color: red;
+  color: #4a4a4a;
 `;
 
 const StyledInfoButton = styled.button`
   ${defaultButtonStyles}
   background-color: #ffffff;
-  color: #0069ed;
+  // color: #0069ed; // Blue
+  color: black;
   border: solid 1px #0069ed;
 `;

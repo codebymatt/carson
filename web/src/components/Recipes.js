@@ -6,12 +6,13 @@ import { InnerPageWrapper } from "./shared/Wrappers";
 import Header from "./Header";
 import RecipeList from "./RecipeList";
 
-const Recipes = ({ togglePage, currentPage }) => {
-  const [addingRecipe, setAddingRecipe] = useState(true);
-  const [recipes, setRecipes] = useState([]);
-
-  const toggleRecipeAddition = () => setAddingRecipe(!addingRecipe);
-
+const Recipes = ({
+  recipes,
+  setRecipes,
+  togglePage,
+  currentPage,
+  startRecipeEditing,
+}) => {
   const deleteRecipeFromList = (recipe) => {
     const updatedRecipes = recipes.slice();
     const index = updatedRecipes.indexOf(recipe);
@@ -35,10 +36,11 @@ const Recipes = ({ togglePage, currentPage }) => {
       <Header
         currentPage={currentPage}
         togglePage={togglePage}
-        addFunction={toggleRecipeAddition}
+        addFunction={() => startRecipeEditing(null)}
       ></Header>
       <RecipeList
         recipes={recipes}
+        startRecipeEditing={startRecipeEditing}
         deleteRecipeFromList={deleteRecipeFromList}
       />
     </InnerPageWrapper>

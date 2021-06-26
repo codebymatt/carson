@@ -1,11 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import { TrashIcon } from "@primer/octicons-react";
+
+import { FiEdit, FiTrash } from "react-icons/fi";
 
 import Card from "./shared/Card";
 import axios from "axios";
+import Icon from "./shared/Icon";
 
-const RecipeList = ({ recipes, deleteRecipeFromList }) => {
+const RecipeList = ({
+  recipes,
+  deleteRecipeFromList,
+  startRecipeEditing,
+}) => {
+  const editRecipe = (recipeId) => {
+    startRecipeEditing(recipeId);
+  };
+
   const deleteRecipe = (recipe) => {
     axios
       .delete(`/v1/recipes/${recipe.id}.json`)
@@ -20,11 +30,26 @@ const RecipeList = ({ recipes, deleteRecipeFromList }) => {
   return (
     <RecipeWrapper>
       {recipes.map((recipe) => (
-        <Recipe>
+        <Recipe key={recipe.id}>
           <RecipeName>{recipe.name}</RecipeName>
-          <IconWrapper onClick={() => deleteRecipe(recipe)}>
-            <DeleteIcon></DeleteIcon>
-          </IconWrapper>
+          <IconContainer>
+            <IconWrapper>
+              <Icon
+                icon={<FiEdit />}
+                label="Edit recipe"
+                size="small"
+                handleFunc={() => editRecipe(recipe.id)}
+              />
+            </IconWrapper>
+            <IconWrapper>
+              <Icon
+                icon={<FiTrash />}
+                label="Delete recipe"
+                size="small"
+                handleFunc={() => deleteRecipe(recipe)}
+              />
+            </IconWrapper>
+          </IconContainer>
         </Recipe>
       ))}
     </RecipeWrapper>
@@ -47,8 +72,11 @@ const Recipe = styled(Card)`
 
 const RecipeName = styled.p``;
 
-const IconWrapper = styled.div``;
+const IconContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
-const DeleteIcon = styled(TrashIcon)`
-  cursor: pointer;
+const IconWrapper = styled.div`
+  margin-left: 1rem;
 `;

@@ -12,17 +12,25 @@ const calculateIconSize = (size) => {
   }
 };
 
+const constructIconParameters = (size, disabled) => {
+  const iconSize = calculateIconSize(size);
+
+  if (disabled) return { size: iconSize, color: "#999" };
+  return { size: iconSize };
+};
+
 const Icon = ({
   icon,
   size = "small",
   label = "",
   handleFunc = () => {},
+  disabled = false,
 }) => {
-  const iconSize = calculateIconSize(size);
+  const iconParams = constructIconParameters(size, disabled);
 
   return (
     <ClickableIcon label={label} onClick={handleFunc}>
-      {React.cloneElement(icon, { size: iconSize })}
+      {React.cloneElement(icon, iconParams)}
     </ClickableIcon>
   );
 };

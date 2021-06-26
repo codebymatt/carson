@@ -35,13 +35,13 @@ const unitOptions = baseUnits.map((unit) => {
 });
 
 const AddItem = ({ toggleItemAddition, addItemToList }) => {
-  const [quantity, setQuantity] = useState("");
-  const [baseUnit, setBaseUnit] = useState("");
+  // const [quantity, setQuantity] = useState("");
+  // const [baseUnit, setBaseUnit] = useState("");
   const [itemName, setItemName] = useState("");
 
   const resetInputs = () => {
-    setQuantity("");
-    setBaseUnit(baseUnits[0]);
+    // setQuantity("");
+    // setBaseUnit(baseUnits[0]);
     setItemName("");
   };
 
@@ -49,8 +49,8 @@ const AddItem = ({ toggleItemAddition, addItemToList }) => {
     axios
       .post("/v1/items.json", {
         item: {
-          base_quantity: quantity,
-          unit: baseUnit,
+          // base_quantity: quantity,
+          // unit: baseUnit,
           name: itemName,
         },
       })
@@ -61,15 +61,15 @@ const AddItem = ({ toggleItemAddition, addItemToList }) => {
       .catch((error) => console.log(error.message));
   };
 
-  useEffect(() => {
-    setBaseUnit(baseUnits[0]);
-  }, []);
+  // useEffect(() => {
+  //   setBaseUnit(baseUnits[0]);
+  // }, []);
 
   return (
     <OuterWrapper>
       <Title>Add Item</Title>
       <InputContainer>
-        <InputWrapper>
+        {/* <InputWrapper>
           <NumericInput
             label="Quantity"
             placeholder={1}
@@ -86,12 +86,12 @@ const AddItem = ({ toggleItemAddition, addItemToList }) => {
             options={unitOptions}
             updateFunc={setBaseUnit}
           />
-        </InputWrapper>
+        </InputWrapper> */}
         <InputWrapper>
           <TextInput
             value={itemName}
             label="Name"
-            placeholder="tomato"
+            placeholder="Tomato"
             updateFunc={setItemName}
           />
         </InputWrapper>
