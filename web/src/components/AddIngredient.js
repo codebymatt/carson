@@ -1,8 +1,15 @@
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Card from "./shared/Card";
 
-import { NumericInput, SelectInput } from "./shared/Inputs";
+import {
+  NumericInput,
+  SelectInput,
+  TextInput,
+} from "./shared/Inputs";
+import { ActionButton, SecondaryButton } from "./shared/Buttons";
+import axios from "axios";
 
 const availableUnits = [
   "whole",
@@ -26,24 +33,91 @@ const unitOptions = availableUnits.map((unit) => {
   };
 });
 
-const AddIngredient = ({ availableItems }) => {
+const AddIngredient = ({
+  availableItems,
+  closeFunc,
+  recipeId,
+  ingredient = null,
+}) => {
   const [quantity, setQuantity] = useState(1);
   const [unit, setUnit] = useState("");
+  const [description, setDescription] = useState("");
   const [itemId, setItemId] = useState(null);
-  // const [itemName, setItemName] = useState("");
   const [itemOptions, setItemOptions] = useState([]);
+  const [ingredientId, setIngredientId] = useState(null);
+
+  const resetInputs = () => {
+    setQuantity(1);
+    setUnit(availableUnits[0]);
+    setDescription("");
+    setItemId(availableItems[0].id);
+  };
+
+  const addIngredient = () => {
+    axios
+      .post(`/v1/recipes/${recipeId}/recipe_items.json`, {
+        recipe_item: {
+          item_id: itemId,
+          quantity: quantity,
+          unit: unit,
+          description: description,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        resetInputs();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const saveIngredient = () => {
+    axios
+      .put(
+        `/v1/recipes/${recipeId}/recipe_items/${ingredientId}.json`,
+        {
+          recipe_item: {
+            item_id: itemId,
+            quantity: quantity,
+            unit: unit,
+            description: description,
+          },
+        },
+      )
+      .then((response) => {
+        closeFunc();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  // }
+
+  const setInputValues = () => {
+    const {
+      id: ingredientId,
+      quantity,
+      unit,
+      description,
+      item_id: itemId,
+    } = ingredient;
+    console.log(itemId);
+
+    setQuantity(quantity);
+    setUnit(unit);
+    setDescription(description);
+    setItemId(itemId);
+    setIngredientId(ingredientId);
+  };
 
   useEffect(() => {
-    setUnit(availableUnits[0]);
+    if (ingredient != null) {
+      setInputValues();
+    } else {
+      setUnit(availableUnits[0]);
+    }
   }, []);
-
-  // useEffect(() => {
-  //   if (itemId !== null) {
-  //     setItemName(
-  //       availableItems.find((item) => item.id == itemId).name,
-  //     );
-  //   }
-  // }, [itemId]);
 
   useEffect(() => {
     if (!_.isEmpty(availableItems)) {
@@ -54,43 +128,62 @@ const AddIngredient = ({ availableItems }) => {
         };
       });
 
-      console.log(options);
-      // setItem(availableItems[0]);
-      // setItemName(availableItems[0].name);
-      setItemId(availableItems[0].id);
       setItemOptions(options);
+      if (ingredient === null) setItemId(availableItems[0].id);
     }
   }, [availableItems]);
 
   return (
-    <InputContainer>
-      <InputWrapper>
-        <NumericInput
-          label="Quantity"
-          placeholder={1}
-          value={quantity}
-          updateFunc={setQuantity}
+    <OuterWrapper>
+      <Title>Add Ingredient</Title>
+      <InputContainer>
+        <InputWrapper>
+          <NumericInput
+            label="Quantity"
+            placeholder={1}
+            value={quantity}
+            updateFunc={setQuantity}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <SelectInput
+            selectObject={unitOptions.find(
+              (obj) => obj.value === unit,
+            )}
+            label="Unit"
+            options={unitOptions}
+            updateFunc={setUnit}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <SelectInput
+            selectObject={itemOptions.find(
+              (obj) => obj.value === itemId,
+            )}
+            label="Name"
+            options={itemOptions}
+            updateFunc={setItemId}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <TextInput
+            label="Description"
+            placeholder={"Chopped"}
+            value={description}
+            updateFunc={setDescription}
+          />
+        </InputWrapper>
+      </InputContainer>
+      <ButtonContainer>
+        <ActionButton
+          text={ingredient === null ? "Add" : "Save"}
+          onClick={
+            ingredient === null ? addIngredient : saveIngredient
+          }
         />
-      </InputWrapper>
-      <InputWrapper>
-        <SelectInput
-          selectObject={unitOptions.find((obj) => obj.value === unit)}
-          label="Unit"
-          options={unitOptions}
-          updateFunc={setUnit}
-        />
-      </InputWrapper>
-      <InputWrapper>
-        <SelectInput
-          selectObject={itemOptions.find(
-            (obj) => obj.value === itemId,
-          )}
-          label="Name"
-          options={itemOptions}
-          updateFunc={setItemId}
-        />
-      </InputWrapper>
-    </InputContainer>
+        <SecondaryButton text="Cancel" onClick={closeFunc} />
+      </ButtonContainer>
+    </OuterWrapper>
   );
 };
 
@@ -109,4 +202,23 @@ const InputContainer = styled.div`
 
 const InputWrapper = styled.div`
   margin-right: 1.5rem;
+`;
+
+const OuterWrapper = styled(Card)`
+  width: 100%;
+  padding: 1rem;
+`;
+
+const Title = styled.h3`
+  margin: 0;
+
+  @media (max-width: 400px) {
+    font-size: 1rem;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.5rem;
 `;

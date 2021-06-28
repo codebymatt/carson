@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { FiX, FiCheckCircle } from "react-icons/fi";
+import { FiX, FiCheckCircle, FiEdit, FiTrash } from "react-icons/fi";
 
 import { InnerPageWrapper } from "./shared/Wrappers";
 import Icon from "./shared/Icon";
 import { TextInput } from "./shared/Inputs";
 
 import AddIngredient from "./AddIngredient";
+import Ingredient from "./Ingredient";
 import axios from "axios";
 import _ from "lodash";
+import { ActionButton } from "./shared/Buttons";
 
 const RecipeEditor = ({
   cancelRecipeAddition,
@@ -24,6 +26,9 @@ const RecipeEditor = ({
 }) => {
   const [recipeName, setRecipeName] = useState("");
   const [recipeLink, setRecipeLink] = useState("");
+  const [currentRecipe, setCurrentRecipe] = useState({});
+  const [showIngredientAddition, setShowIngredientAddition] =
+    useState(false);
 
   const initializeExistingRecipeDetails = () => {
     if (currentRecipeId === null) return;
@@ -73,6 +78,13 @@ const RecipeEditor = ({
 
   useEffect(() => {
     if (currentRecipeId != null) initializeExistingRecipeDetails();
+    if (currentRecipeId !== null) {
+      const recipe = recipes.find(
+        (recipe) => recipe.id === currentRecipeId,
+      );
+      console.log(recipe);
+      setCurrentRecipe(recipe);
+    }
   }, []);
 
   return (
@@ -113,9 +125,34 @@ const RecipeEditor = ({
           placeholder="https://example.com"
         />
       </BasicInfoWrapper>
-      {currentRecipeId != null && (
-        <AddIngredient availableItems={items} />
+      {currentRecipeId != null && !showIngredientAddition && (
+        <ButtonWrapper>
+          <ActionButton
+            text="Add Ingredient"
+            onClick={() => setShowIngredientAddition(true)}
+          />
+        </ButtonWrapper>
       )}
+      {currentRecipeId != null && showIngredientAddition && (
+        <AddIngredient
+          recipeId={currentRecipeId}
+          closeFunc={() => setShowIngredientAddition(false)}
+          availableItems={items}
+        />
+      )}
+      {currentRecipeId === null && (
+        <PlaceholderWrapper>
+          Give your recipe a name before you add any ingredients.
+        </PlaceholderWrapper>
+      )}
+      {!_.isEmpty(currentRecipe) &&
+        currentRecipe.ingredients.map((ingredient) => (
+          <Ingredient
+            ingredient={ingredient}
+            recipeId={currentRecipeId}
+            availableItems={items}
+          />
+        ))}
     </InnerPageWrapper>
   );
 };
@@ -149,6 +186,7 @@ const IconWrapper = styled.div`
 const BasicInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 2rem;
 `;
 
 const IngredientAdder = styled.div`
@@ -162,6 +200,16 @@ const IngredientAdder = styled.div`
   }
 `;
 
-const InputWrapper = styled.div`
-  margin-right: 1.5rem;
+const PlaceholderWrapper = styled.div`
+  margin-top: 2rem;
 `;
+
+const ButtonWrapper = styled.div`
+  margin-top: 2rem;
+`;
+
+const IngredientIconWrapper = styled.div`
+  margin-left: 1rem;
+`;
+
+const IngredientName = styled.p``;

@@ -6,7 +6,7 @@ module V1
     before_action :set_recipe, except: [:create, :index]
 
     def index
-      recipes = Recipe.order(created_at: :desc).all.to_a.map(&:serialize_basic)
+      recipes = Recipe.order(created_at: :desc).all.to_a.map(&:serialize)
       api_success(recipes: recipes)
     end
 

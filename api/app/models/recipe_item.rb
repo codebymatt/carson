@@ -25,6 +25,7 @@ class RecipeItem < ApplicationRecord
       unit: unit,
       description: description,
       recipe_id: recipe.id,
+      item_id: item.id,
       full_description: full_description,
       created_at: created_at,
       updated_at: updated_at

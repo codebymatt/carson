@@ -11,8 +11,8 @@ const App = () => {
   axios.defaults.baseURL = "http://localhost:3000";
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
-  const [page, setPage] = useState("items");
-  const [editingRecipe, setEditingRecipe] = useState(true);
+  const [page, setPage] = useState("recipes");
+  const [editingRecipe, setEditingRecipe] = useState(false);
   const [currentRecipeId, setCurrentRecipeId] = useState(null);
   const [items, setItems] = useState([]);
   const [recipes, setRecipes] = useState([]);

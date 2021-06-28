@@ -4,56 +4,20 @@ import axios from "axios";
 
 import Card from "./shared/Card";
 
-import {
-  TextInput,
-  NumericInput,
-  SelectInput,
-} from "./shared/Inputs";
+import { TextInput } from "./shared/Inputs";
 
 import { ActionButton, SecondaryButton } from "./shared/Buttons";
 
-const baseUnits = [
-  "whole",
-  "bottle",
-  "kilogram",
-  "pound",
-  "ounces",
-  "milliliter",
-  "grams",
-  "teaspoon",
-  "tablespoon",
-  "tin",
-  "block",
-  "clove",
-];
-
-const unitOptions = baseUnits.map((unit) => {
-  return {
-    value: unit,
-    label: unit,
-  };
-});
-
 const AddItem = ({ toggleItemAddition, addItemToList }) => {
-  // const [quantity, setQuantity] = useState("");
-  // const [baseUnit, setBaseUnit] = useState("");
   const [itemName, setItemName] = useState("");
 
   const resetInputs = () => {
-    // setQuantity("");
-    // setBaseUnit(baseUnits[0]);
     setItemName("");
   };
 
   const saveItem = () => {
     axios
-      .post("/v1/items.json", {
-        item: {
-          // base_quantity: quantity,
-          // unit: baseUnit,
-          name: itemName,
-        },
-      })
+      .post("/v1/items.json", { item: { name: itemName } })
       .then((response) => {
         addItemToList(response.data.item);
         resetInputs();
@@ -61,32 +25,10 @@ const AddItem = ({ toggleItemAddition, addItemToList }) => {
       .catch((error) => console.log(error.message));
   };
 
-  // useEffect(() => {
-  //   setBaseUnit(baseUnits[0]);
-  // }, []);
-
   return (
     <OuterWrapper>
       <Title>Add Item</Title>
       <InputContainer>
-        {/* <InputWrapper>
-          <NumericInput
-            label="Quantity"
-            placeholder={1}
-            value={quantity}
-            updateFunc={setQuantity}
-          />
-        </InputWrapper>
-        <InputWrapper>
-          <SelectInput
-            selectObject={unitOptions.find(
-              (obj) => obj.value === baseUnit,
-            )}
-            label="Base Unit"
-            options={unitOptions}
-            updateFunc={setBaseUnit}
-          />
-        </InputWrapper> */}
         <InputWrapper>
           <TextInput
             value={itemName}
