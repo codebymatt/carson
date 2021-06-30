@@ -1,17 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+import _ from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import { FiTrash } from "react-icons/fi";
 
+import { deleteItemFromList } from "../state/itemState";
 import Card from "./shared/Card";
-import axios from "axios";
 import Icon from "./shared/Icon";
 
-const ItemList = ({ items, deleteItemFromList }) => {
-  const deleteItem = (item) => {
+const ItemList = () => {
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.items.list);
+
+  const deleteItem = (itemId) => {
     axios
-      .delete(`/v1/items/${item.id}.json`)
+      .delete(`/v1/items/${itemId}.json`)
       .then(() => {
-        deleteItemFromList(item);
+        dispatch(deleteItem(itemId));
       })
       .catch((error) => {
         console.log(error);
@@ -20,17 +26,19 @@ const ItemList = ({ items, deleteItemFromList }) => {
 
   return (
     <ItemWrapper>
-      {items.map((item) => (
-        <Item key={item.id}>
-          <ItemName>{item.name}</ItemName>
-          <Icon
-            icon={<FiTrash />}
-            label="Delete item"
-            size="small"
-            handleFunc={() => deleteItem(item)}
-          />
-        </Item>
-      ))}
+      {_.map(items, (item) => {
+        return (
+          <Item key={item.id}>
+            <ItemName>{item.name}</ItemName>
+            <Icon
+              icon={<FiTrash />}
+              label="Delete item"
+              size="small"
+              handleFunc={() => deleteItem(item.id)}
+            />
+          </Item>
+        );
+      })}
     </ItemWrapper>
   );
 };

@@ -4,8 +4,10 @@ import { InnerPageWrapper } from "./shared/Wrappers";
 import AddItem from "./AddItem";
 import Header from "./Header";
 import ItemList from "./ItemList";
+import { useSelector } from "react-redux";
 
-const Items = ({ togglePage, currentPage, items, setItems }) => {
+const Items = ({ togglePage, currentPage, setItems }) => {
+  const items = useSelector((state) => state.items.list);
   const [addingItem, setAddingItem] = useState(false);
 
   const addItemToList = (item) => setItems([item, ...items]);
@@ -34,10 +36,7 @@ const Items = ({ togglePage, currentPage, items, setItems }) => {
           toggleItemAddition={toggleItemAddition}
         />
       )}
-      <ItemList
-        items={items}
-        deleteItemFromList={deleteItemFromList}
-      ></ItemList>
+      <ItemList deleteItemFromList={deleteItemFromList}></ItemList>
     </InnerPageWrapper>
   );
 };

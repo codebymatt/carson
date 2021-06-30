@@ -6,12 +6,11 @@ import { FiEdit, FiTrash } from "react-icons/fi";
 import Card from "./shared/Card";
 import axios from "axios";
 import Icon from "./shared/Icon";
+import { useSelector } from "react-redux";
 
-const RecipeList = ({
-  recipes,
-  deleteRecipeFromList,
-  startRecipeEditing,
-}) => {
+const RecipeList = ({ deleteRecipeFromList, startRecipeEditing }) => {
+  const recipes = useSelector((state) => state.recipes.list);
+
   const editRecipe = (recipeId) => {
     startRecipeEditing(recipeId);
   };
@@ -29,29 +28,31 @@ const RecipeList = ({
 
   return (
     <RecipeWrapper>
-      {recipes.map((recipe) => (
-        <Recipe key={recipe.id}>
-          <RecipeName>{recipe.name}</RecipeName>
-          <IconContainer>
-            <IconWrapper>
-              <Icon
-                icon={<FiEdit />}
-                label="Edit recipe"
-                size="small"
-                handleFunc={() => editRecipe(recipe.id)}
-              />
-            </IconWrapper>
-            <IconWrapper>
-              <Icon
-                icon={<FiTrash />}
-                label="Delete recipe"
-                size="small"
-                handleFunc={() => deleteRecipe(recipe)}
-              />
-            </IconWrapper>
-          </IconContainer>
-        </Recipe>
-      ))}
+      {_.map(recipes, (recipe) => {
+        return (
+          <Recipe key={recipe.id}>
+            <RecipeName>{recipe.name}</RecipeName>
+            <IconContainer>
+              <IconWrapper>
+                <Icon
+                  icon={<FiEdit />}
+                  label="Edit recipe"
+                  size="small"
+                  handleFunc={() => editRecipe(recipe.id)}
+                />
+              </IconWrapper>
+              <IconWrapper>
+                <Icon
+                  icon={<FiTrash />}
+                  label="Delete recipe"
+                  size="small"
+                  handleFunc={() => deleteRecipe(recipe)}
+                />
+              </IconWrapper>
+            </IconContainer>
+          </Recipe>
+        );
+      })}
     </RecipeWrapper>
   );
 };

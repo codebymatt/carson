@@ -10,6 +10,9 @@ import {
 } from "./shared/Inputs";
 import { ActionButton, SecondaryButton } from "./shared/Buttons";
 import axios from "axios";
+import Icon from "./shared/Icon";
+import { FiTrash } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 const availableUnits = [
   "whole",
@@ -34,11 +37,13 @@ const unitOptions = availableUnits.map((unit) => {
 });
 
 const AddIngredient = ({
-  availableItems,
   closeFunc,
   recipeId,
   ingredient = null,
+  removeIngredientFromRecipe = () => {},
 }) => {
+  const availableItems = useSelector((state) => state.items.list);
+  if (ingredient === null) setItemId(_.keys(availableItems)[0]);
   const [quantity, setQuantity] = useState(1);
   const [unit, setUnit] = useState("");
   const [description, setDescription] = useState("");
@@ -50,7 +55,7 @@ const AddIngredient = ({
     setQuantity(1);
     setUnit(availableUnits[0]);
     setDescription("");
-    setItemId(availableItems[0].id);
+    setItemId(_.keys(availableItems)[0]);
   };
 
   const addIngredient = () => {
@@ -92,7 +97,6 @@ const AddIngredient = ({
         console.log(error);
       });
   };
-  // }
 
   const setInputValues = () => {
     const {
@@ -111,6 +115,29 @@ const AddIngredient = ({
     setIngredientId(ingredientId);
   };
 
+  const deleteIngredient = () => {
+    axios
+      .delete(
+        `/v1/recipes/${recipeId}/recipe_items/${ingredientId}.json`,
+        {
+          recipe_item: {
+            item_id: itemId,
+            quantity: quantity,
+            unit: unit,
+            description: description,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response.data);
+        closeFunc();
+        removeIngredientFromRecipe(recipeId, ingredientId);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     if (ingredient != null) {
       setInputValues();
@@ -121,7 +148,7 @@ const AddIngredient = ({
 
   useEffect(() => {
     if (!_.isEmpty(availableItems)) {
-      const options = availableItems.map((item) => {
+      const options = _.map(availableItems, (item) => {
         return {
           value: item.id,
           label: item.name,
@@ -129,13 +156,24 @@ const AddIngredient = ({
       });
 
       setItemOptions(options);
-      if (ingredient === null) setItemId(availableItems[0].id);
+      if (ingredient === null) setItemId(_.keys(availableItems)[0]);
     }
   }, [availableItems]);
 
   return (
     <OuterWrapper>
-      <Title>Add Ingredient</Title>
+      <TitleWrapper>
+        <Title>{`${
+          ingredient === null ? "Add" : "Edit"
+        } Ingredient`}</Title>
+        {ingredient != null && (
+          <Icon
+            icon={<FiTrash />}
+            label="Remove ingredient"
+            handleFunc={deleteIngredient}
+          />
+        )}
+      </TitleWrapper>
       <InputContainer>
         <InputWrapper>
           <NumericInput
@@ -207,6 +245,12 @@ const InputWrapper = styled.div`
 const OuterWrapper = styled(Card)`
   width: 100%;
   padding: 1rem;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const Title = styled.h3`

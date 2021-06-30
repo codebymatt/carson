@@ -11,19 +11,20 @@ import Ingredient from "./Ingredient";
 import axios from "axios";
 import _ from "lodash";
 import { ActionButton } from "./shared/Buttons";
+import { useSelector } from "react-redux";
 
 const RecipeEditor = ({
   cancelRecipeAddition,
-  recipes,
   currentRecipeId,
-  items,
   addRecipeToList,
   updateRecipeInList,
   recipeSavingEnabled,
   setRecipeSavingEnabled,
+  removeIngredientFromRecipe,
   originalRecipeName = "",
   originalRecipeLink = "",
 }) => {
+  const recipes = useSelector((state) => state.recipes.list);
   const [recipeName, setRecipeName] = useState("");
   const [recipeLink, setRecipeLink] = useState("");
   const [currentRecipe, setCurrentRecipe] = useState({});
@@ -33,9 +34,7 @@ const RecipeEditor = ({
   const initializeExistingRecipeDetails = () => {
     if (currentRecipeId === null) return;
 
-    const currentRecipe = recipes.find(
-      (recipe) => recipe.id === currentRecipeId,
-    );
+    const currentRecipe = recipes[currentRecipeId];
 
     setRecipeName(currentRecipe.name);
     setRecipeLink(currentRecipe.link);
@@ -79,10 +78,7 @@ const RecipeEditor = ({
   useEffect(() => {
     if (currentRecipeId != null) initializeExistingRecipeDetails();
     if (currentRecipeId !== null) {
-      const recipe = recipes.find(
-        (recipe) => recipe.id === currentRecipeId,
-      );
-      console.log(recipe);
+      const recipe = recipes[currentRecipeId];
       setCurrentRecipe(recipe);
     }
   }, []);
@@ -137,7 +133,7 @@ const RecipeEditor = ({
         <AddIngredient
           recipeId={currentRecipeId}
           closeFunc={() => setShowIngredientAddition(false)}
-          availableItems={items}
+          removeIngredientFromRecipe={removeIngredientFromRecipe}
         />
       )}
       {currentRecipeId === null && (
@@ -150,7 +146,6 @@ const RecipeEditor = ({
           <Ingredient
             ingredient={ingredient}
             recipeId={currentRecipeId}
-            availableItems={items}
           />
         ))}
     </InnerPageWrapper>

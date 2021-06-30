@@ -7,7 +7,7 @@ import AddIngredient from "./AddIngredient";
 import Icon from "./shared/Icon";
 import Card from "./shared/Card";
 
-const Ingredient = ({ ingredient, recipeId, availableItems }) => {
+const Ingredient = ({ ingredient, recipeId }) => {
   const [editing, setEditing] = useState(false);
 
   return (
@@ -30,7 +30,6 @@ const Ingredient = ({ ingredient, recipeId, availableItems }) => {
           recipeId={recipeId}
           ingredient={ingredient}
           closeFunc={() => setEditing(false)}
-          availableItems={availableItems}
         />
       )}
     </>
