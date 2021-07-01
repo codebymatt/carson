@@ -1,51 +1,33 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+import styled from "styled-components";
 
 import { InnerPageWrapper } from "./shared/Wrappers";
 
-import Header from "./Header";
+import NavHeader from "./NavHeader";
 import RecipeList from "./RecipeList";
-import { useSelector } from "react-redux";
 
-const Recipes = ({
-  setRecipes,
-  togglePage,
-  currentPage,
-  startRecipeEditing,
-}) => {
-  const recipes = useSelector((state) => state.recipes.list);
-  const deleteRecipeFromList = (recipe) => {
-    const updatedRecipes = recipes.slice();
-    const index = updatedRecipes.indexOf(recipe);
-    if (index > -1) {
-      updatedRecipes.splice(index, 1);
-      setRecipes(updatedRecipes);
-    }
+import { FiPlus, FiBookOpen, FiList } from "react-icons/fi";
+
+import Icon from "./shared/Icon";
+import { useHistory, withRouter } from "react-router-dom";
+
+const Recipes = () => {
+  // const [addingRecipe]
+  const history = useHistory();
+
+  const addRecipe = () => {
+    history.push("/recipes/add");
   };
-
-  // useEffect(() => {
-  //   axios
-  //     .get("/v1/recipes.json")
-  //     .then((response) => {
-  //       setRecipes(response.data.recipes);
-  //     })
-  //     .catch((error) => console.log(error));
-  // }, []);
-
   return (
     <InnerPageWrapper>
-      <Header
-        currentPage={currentPage}
-        togglePage={togglePage}
-        addFunction={() => startRecipeEditing(null)}
-      ></Header>
-      <RecipeList
-        // recipes={recipes}
-        startRecipeEditing={startRecipeEditing}
-        deleteRecipeFromList={deleteRecipeFromList}
-      />
+      <NavHeader currentPage="recipe" addFunction={addRecipe} />
+      <RecipeList />
     </InnerPageWrapper>
   );
 };
 
-export default Recipes;
+export default withRouter(Recipes);
+
+const IconWrapper = styled.div`
+  margin-left: 1rem;
+`;

@@ -8,64 +8,56 @@ import { TextInput } from "./shared/Inputs";
 
 import AddIngredient from "./AddIngredient";
 import Ingredient from "./Ingredient";
-import axios from "axios";
 import _ from "lodash";
 import { ActionButton } from "./shared/Buttons";
 import { useSelector } from "react-redux";
+import { createRecipe, updateRecipe } from "../api/recipeApi";
 
 const RecipeEditor = ({
   cancelRecipeAddition,
   currentRecipeId,
-  addRecipeToList,
-  updateRecipeInList,
   recipeSavingEnabled,
   setRecipeSavingEnabled,
   removeIngredientFromRecipe,
   originalRecipeName = "",
   originalRecipeLink = "",
 }) => {
+  const currentRecipe = useSelector(
+    (state) => state.recipes.currentRecipe,
+  );
+
   const recipes = useSelector((state) => state.recipes.list);
   const [recipeName, setRecipeName] = useState("");
   const [recipeLink, setRecipeLink] = useState("");
-  const [currentRecipe, setCurrentRecipe] = useState({});
+  // const [currentRecipe, setCurrentRecipe] = useState({});
   const [showIngredientAddition, setShowIngredientAddition] =
     useState(false);
 
   const initializeExistingRecipeDetails = () => {
-    if (currentRecipeId === null) return;
+    if (currentRecipe === null) return;
 
-    const currentRecipe = recipes[currentRecipeId];
+    // const currentRecipe = recipes[currentRecipeId];
 
     setRecipeName(currentRecipe.name);
     setRecipeLink(currentRecipe.link);
   };
 
-  const createRecipe = () => {
-    axios
-      .post("/v1/recipes.json", {
-        recipe: { name: recipeName, link: recipeLink },
-      })
-      .then((response) => {
-        addRecipeToList(response.data.recipe);
-        setRecipeSavingEnabled(false);
-      })
-      .catch((error) => console.log(error.message));
+  const currentRecipeFields = () => {
+    return { name: recipeName, link: recipeLink };
   };
 
-  const saveRecipe = () => {
-    axios
-      .put(`/v1/recipes/${currentRecipeId}.json`, {
-        recipe: { name: recipeName, link: recipeLink },
-      })
-      .then((response) => {
-        updateRecipeInList(response.data.recipe);
-        setRecipeSavingEnabled(false);
-      })
-      .catch((error) => console.log(error.message));
+  const addRecipe = async () => {
+    const fields = currentRecipeFields();
+    createRecipe(fields, () => setRecipeSavingEnabled(false));
+  };
+
+  const saveRecipe = async () => {
+    const fields = currentRecipeFields();
+    updateRecipe(fields, () => setRecipeSavingEnabled(false));
   };
 
   const actionFunc =
-    currentRecipeId === null ? createRecipe : saveRecipe;
+    currentRecipeId === null ? addRecipe : saveRecipe;
 
   useEffect(() => {
     if (
@@ -107,20 +99,12 @@ const RecipeEditor = ({
           </IconWrapper>
         </IconContainer>
       </HeaderWrapper>
-      <BasicInfoWrapper>
-        <TextInput
-          value={recipeName}
-          updateFunc={setRecipeName}
-          label="Recipe Name"
-          placeholder="Something tasty.."
-        />
-        <TextInput
-          value={recipeLink}
-          updateFunc={setRecipeLink}
-          label="Web Link"
-          placeholder="https://example.com"
-        />
-      </BasicInfoWrapper>
+      <RecipeInputs
+        name={recipeName}
+        link={recipeLink}
+        setName={setRecipeName}
+        setLink={setRecipeLink}
+      />
       {currentRecipeId != null && !showIngredientAddition && (
         <ButtonWrapper>
           <ActionButton
@@ -154,6 +138,24 @@ const RecipeEditor = ({
 
 export default RecipeEditor;
 
+const RecipeInputs = ({ name, link, setName, setLink }) => {
+  return (
+    <BasicInfoWrapper>
+      <TextInput
+        value={name}
+        updateFunc={setName}
+        label="Recipe Name"
+        placeholder="Something tasty.."
+      />
+      <TextInput
+        value={link}
+        updateFunc={setLink}
+        label="Web Link"
+        placeholder="https://example.com"
+      />
+    </BasicInfoWrapper>
+  );
+};
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;

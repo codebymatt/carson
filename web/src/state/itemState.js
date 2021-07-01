@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
-// import { useDispatch } from "react-redux";
-
-// const dispatch = useDispatch();
 
 export const itemState = createSlice({
   name: "items",
@@ -16,12 +13,29 @@ export const itemState = createSlice({
         };
       }, {});
     },
+    addItemToList: (state, action) => {
+      state.list = {
+        ...state.list,
+        ...{ [action.payload.id]: action.payload },
+      };
+    },
     deleteItemFromList: (state, action) => {
       state.list = _.omit(state.list, action.payload);
+    },
+    updateItemInList: (state, action) => {
+      state.list = {
+        ...state.list,
+        ...{ [action.payload.id]: action.payload },
+      };
     },
   },
 });
 
-export const { setItemList, deleteItemFromList } = itemState.actions;
+export const {
+  setItemList,
+  addItemToList,
+  deleteItemFromList,
+  updateItemInList,
+} = itemState.actions;
 
 export default itemState.reducer;

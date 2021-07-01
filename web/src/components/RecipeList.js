@@ -4,27 +4,15 @@ import styled from "styled-components";
 import { FiEdit, FiTrash } from "react-icons/fi";
 
 import Card from "./shared/Card";
-import axios from "axios";
 import Icon from "./shared/Icon";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteRecipe } from "../api/recipeApi";
+import { useHistory, withRouter } from "react-router-dom";
 
-const RecipeList = ({ deleteRecipeFromList, startRecipeEditing }) => {
+const RecipeList = ({ startRecipeEditing }) => {
+  const history = useHistory();
   const recipes = useSelector((state) => state.recipes.list);
-
-  const editRecipe = (recipeId) => {
-    startRecipeEditing(recipeId);
-  };
-
-  const deleteRecipe = (recipe) => {
-    axios
-      .delete(`/v1/recipes/${recipe.id}.json`)
-      .then(() => {
-        deleteRecipeFromList(recipe);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const editRecipe = (recipeId) => startRecipeEditing(recipeId);
 
   return (
     <RecipeWrapper>
@@ -38,7 +26,9 @@ const RecipeList = ({ deleteRecipeFromList, startRecipeEditing }) => {
                   icon={<FiEdit />}
                   label="Edit recipe"
                   size="small"
-                  handleFunc={() => editRecipe(recipe.id)}
+                  handleFunc={() =>
+                    history.push(`/recipes/${recipe.id}`)
+                  }
                 />
               </IconWrapper>
               <IconWrapper>
@@ -46,7 +36,7 @@ const RecipeList = ({ deleteRecipeFromList, startRecipeEditing }) => {
                   icon={<FiTrash />}
                   label="Delete recipe"
                   size="small"
-                  handleFunc={() => deleteRecipe(recipe)}
+                  handleFunc={() => deleteRecipe(recipe.id)}
                 />
               </IconWrapper>
             </IconContainer>
@@ -57,7 +47,7 @@ const RecipeList = ({ deleteRecipeFromList, startRecipeEditing }) => {
   );
 };
 
-export default RecipeList;
+export default withRouter(RecipeList);
 
 const RecipeWrapper = styled.div``;
 

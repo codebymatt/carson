@@ -1,28 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 
 import Card from "./shared/Card";
 
 import { TextInput } from "./shared/Inputs";
 
 import { ActionButton, SecondaryButton } from "./shared/Buttons";
+import { createItem } from "../api/itemApi";
 
-const AddItem = ({ toggleItemAddition, addItemToList }) => {
+const AddItem = ({ toggleItemAddition }) => {
   const [itemName, setItemName] = useState("");
+  const resetInputs = () => setItemName("");
 
-  const resetInputs = () => {
-    setItemName("");
-  };
-
-  const saveItem = () => {
-    axios
-      .post("/v1/items.json", { item: { name: itemName } })
-      .then((response) => {
-        addItemToList(response.data.item);
-        resetInputs();
-      })
-      .catch((error) => console.log(error.message));
+  const saveItem = async () => {
+    createItem({ name: itemName }, resetInputs);
   };
 
   return (

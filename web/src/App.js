@@ -1,47 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setItemList } from "./state/itemState";
-import { setRecipeList } from "./state/recipeState";
 import styled from "styled-components";
 import axios from "axios";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "react-router-dom";
 
 import "./App.css";
-import RecipeEditor from "./components/RecipeEditor";
+import RecipeEditorLegacy from "./components/RecipeEditorLegacy";
+import RecipeEditor from "./components/recipes/RecipeEditor";
+import RecipeCreator from "./components/recipes/RecipeCreator";
 import Items from "./components/Items";
 import Recipes from "./components/Recipes";
 
 import { fetchItems } from "./api/itemApi";
+import { fetchRecipes } from "./api/recipeApi";
 
 const App = () => {
   axios.defaults.baseURL = "http://localhost:3000";
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
-  const dispatch = useDispatch();
-  // const items = useSelector((state) => state.items.list);
-
   const [page, setPage] = useState("recipes");
   const [editingRecipe, setEditingRecipe] = useState(false);
   const [currentRecipeId, setCurrentRecipeId] = useState(null);
-  // const [items, setItems] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [recipeSavingEnabled, setRecipeSavingEnabled] =
     useState(false);
-
-  const addRecipeToList = (recipe) => {
-    setCurrentRecipeId(recipe.id);
-    setRecipes([recipe, ...recipes]);
-  };
-
-  const updateRecipeInList = (updatedRecipeData) => {
-    const recipeList = recipes;
-    const updatedRecipe = recipeList.find((recipe) => {
-      recipe.id === updatedRecipeData.id;
-    });
-
-    const index = recipeList.indexOf(updatedRecipe);
-    recipeList[index] = updatedRecipeData;
-    setRecipes(recipeList);
-  };
 
   const removeIngredientFromRecipe = (
     recipeId,
@@ -68,12 +54,6 @@ const App = () => {
     }
   };
 
-  const LoadedComponent = page === "recipes" ? Recipes : Items;
-  const togglePage = () => {
-    const newPage = page === "recipes" ? "items" : "recipes";
-    setPage(newPage);
-  };
-
   const initializeRecipeEditor = (recipeId) => {
     setCurrentRecipeId(recipeId);
     setEditingRecipe(true);
@@ -84,26 +64,6 @@ const App = () => {
     setEditingRecipe(false);
   };
 
-  // const fetchItems = () => {
-  //   axios
-  //     .get("/v1/items.json")
-  //     .then((response) => {
-  //       const items = response.data.items;
-  //       dispatch(setItemList(items));
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
-
-  const fetchRecipes = () => {
-    axios
-      .get("/v1/recipes.json")
-      .then((response) => {
-        const recipes = response.data.recipes;
-        dispatch(setRecipeList(recipes));
-      })
-      .catch((error) => console.log(error));
-  };
-
   useEffect(() => {
     fetchItems();
     fetchRecipes();
@@ -111,26 +71,22 @@ const App = () => {
 
   return (
     <PageWrapper>
-      {editingRecipe && (
-        <RecipeEditor
-          cancelRecipeAddition={cancelRecipeEditing}
-          currentRecipeId={currentRecipeId}
-          setRecipes={setRecipes}
-          addRecipeToList={addRecipeToList}
-          updateRecipeInList={updateRecipeInList}
-          recipeSavingEnabled={recipeSavingEnabled}
-          setRecipeSavingEnabled={setRecipeSavingEnabled}
-          removeIngredientFromRecipe={removeIngredientFromRecipe}
-        />
-      )}
-      {!editingRecipe && (
-        <LoadedComponent
-          currentPage={page}
-          togglePage={togglePage}
-          startRecipeEditing={initializeRecipeEditor}
-          setRecipes={setRecipes}
-        />
-      )}
+      <Router>
+        <Switch>
+          <Route path="/items">
+            <Items />
+          </Route>
+          <Route path={"/recipes/add"}>
+            <RecipeCreator />
+          </Route>
+          <Route path={"/recipes/:id"}>
+            <RecipeEditor />
+          </Route>
+          <Route path={["/", "/recipes"]}>
+            <Recipes />
+          </Route>
+        </Switch>
+      </Router>
     </PageWrapper>
   );
 };

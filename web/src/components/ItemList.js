@@ -1,28 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import _ from "lodash";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import { useSelector } from "react-redux";
 import { FiTrash } from "react-icons/fi";
 
-import { deleteItemFromList } from "../state/itemState";
 import Card from "./shared/Card";
 import Icon from "./shared/Icon";
+import { deleteItem } from "../api/itemApi";
 
 const ItemList = () => {
-  const dispatch = useDispatch();
   const items = useSelector((state) => state.items.list);
-
-  const deleteItem = (itemId) => {
-    axios
-      .delete(`/v1/items/${itemId}.json`)
-      .then(() => {
-        dispatch(deleteItem(itemId));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   return (
     <ItemWrapper>
