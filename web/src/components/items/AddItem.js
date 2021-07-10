@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import Card from "./shared/Card";
+import Card from "../shared/Card";
 
-import { TextInput } from "./shared/Inputs";
+import { TextInput } from "../shared/Inputs";
 
-import { ActionButton, SecondaryButton } from "./shared/Buttons";
-import { createItem } from "../api/itemApi";
+import { ActionButton, SecondaryButton } from "../shared/Buttons";
+import { createItem } from "../../api/itemApi";
 
 const AddItem = ({ toggleItemAddition }) => {
   const [itemName, setItemName] = useState("");

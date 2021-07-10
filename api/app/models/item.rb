@@ -14,6 +14,10 @@ class Item < ApplicationRecord
     }
   end
 
+  def formatted_errors
+    errors.flat_map(&:type)
+  end
+
   private
 
   # TODO: Write test for this use case.

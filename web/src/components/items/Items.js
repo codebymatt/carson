@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { InnerPageWrapper } from "./shared/Wrappers";
+import { InnerPageWrapper } from "../shared/Wrappers";
 import AddItem from "./AddItem";
-import NavHeader from "./NavHeader";
+import NavHeader from "../NavHeader";
 import ItemList from "./ItemList";
 
 const Items = () => {

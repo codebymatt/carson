@@ -4,9 +4,9 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { FiTrash } from "react-icons/fi";
 
-import Card from "./shared/Card";
-import Icon from "./shared/Icon";
-import { deleteItem } from "../api/itemApi";
+import Card from "../shared/Card";
+import Icon from "../shared/Icon";
+import { deleteItem } from "../../api/itemApi";
 
 const ItemList = () => {
   const items = useSelector((state) => state.items.list);

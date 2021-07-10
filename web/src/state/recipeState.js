@@ -7,6 +7,8 @@ export const recipeState = createSlice({
   reducers: {
     setRecipeList: (state, action) => {
       state.list = action.payload.reduce((memo, recipe) => {
+        recipe.ingredients = mapIngredientsToId(recipe.ingredients);
+
         return {
           ...memo,
           [recipe.id]: recipe,
@@ -34,6 +36,39 @@ export const recipeState = createSlice({
 
       state.currentRecipe = recipe;
     },
+    addIngredientToRecipe: (state, action) => {
+      const { recipeId, ingredient } = action.payload;
+      const recipe = state.list[recipeId];
+      state.list[recipeId] = {
+        ...recipe,
+        ingredients: {
+          ...recipe.ingredients,
+          [ingredient.id]: ingredient,
+        },
+      };
+    },
+    removeIngredientFromRecipe: (state, action) => {
+      const { recipeId, ingredientId } = action.payload;
+      const recipe = state.list[recipeId];
+
+      const updatedIngredients = _.omit(
+        recipe.ingredients,
+        ingredientId,
+      );
+
+      state.list[recipeId].ingredients = updatedIngredients;
+    },
+    updateIngredientInRecipe: (state, action) => {
+      const { recipeId, ingredient } = action.payload;
+      const recipe = state.list[recipeId];
+
+      const updatedIngredients = {
+        ...recipe.ingredients,
+        [ingredient.id]: ingredient,
+      };
+
+      state.list[recipe.id].ingredients = updatedIngredients;
+    },
   },
 });
 
@@ -43,6 +78,18 @@ export const {
   deleteRecipeFromList,
   updateRecipeInList,
   setCurrentRecipe,
+  addIngredientToRecipe,
+  removeIngredientFromRecipe,
+  updateIngredientInRecipe,
 } = recipeState.actions;
 
 export default recipeState.reducer;
+
+const mapIngredientsToId = (ingredients) => {
+  return ingredients.reduce((memo, ingredient) => {
+    return {
+      ...memo,
+      [ingredient.id]: ingredient,
+    };
+  }, {});
+};

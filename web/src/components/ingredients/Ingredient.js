@@ -1,19 +1,18 @@
 import React, { useState } from "react";
+import { FiEdit } from "react-icons/fi";
 import styled from "styled-components";
 
-import { FiEdit } from "react-icons/fi";
+import Card from "../shared/Card";
+import Icon from "../shared/Icon";
+import IngredientEditor from "./IngredientEditor";
 
-import AddIngredient from "./AddIngredient";
-import Icon from "./shared/Icon";
-import Card from "./shared/Card";
-
-const Ingredient = ({ ingredient, recipeId }) => {
+const Ingredient = ({ ingredient }) => {
   const [editing, setEditing] = useState(false);
 
   return (
     <>
       {!editing && (
-        <IngredientDisplayer>
+        <IngredientWrapper>
           <IngredientName>
             {ingredient.full_description}
           </IngredientName>
@@ -23,11 +22,10 @@ const Ingredient = ({ ingredient, recipeId }) => {
             size="small"
             handleFunc={() => setEditing(true)}
           />
-        </IngredientDisplayer>
+        </IngredientWrapper>
       )}
       {editing && (
-        <AddIngredient
-          recipeId={recipeId}
+        <IngredientEditor
           ingredient={ingredient}
           closeFunc={() => setEditing(false)}
         />
@@ -38,7 +36,7 @@ const Ingredient = ({ ingredient, recipeId }) => {
 
 export default Ingredient;
 
-const IngredientDisplayer = styled(Card)`
+const IngredientWrapper = styled(Card)`
   padding: 0.8rem 1rem;
   margin-top: 1rem;
   background-color: white;

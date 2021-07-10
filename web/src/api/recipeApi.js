@@ -28,7 +28,7 @@ export const createRecipe = (recipe, callback) => {
     .post("/v1/recipes.json", { recipe: recipe })
     .then((response) => {
       dispatch(addRecipeToList(response.data.recipe));
-      if (!_.isNil(callback)) callback();
+      if (!_.isNil(callback)) callback(response.data.recipe.id);
     })
     .catch((error) => console.log(error));
 };

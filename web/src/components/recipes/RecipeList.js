@@ -3,16 +3,15 @@ import styled from "styled-components";
 
 import { FiEdit, FiTrash } from "react-icons/fi";
 
-import Card from "./shared/Card";
-import Icon from "./shared/Icon";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteRecipe } from "../api/recipeApi";
+import Card from "../shared/Card";
+import Icon from "../shared/Icon";
+import { useSelector } from "react-redux";
+import { deleteRecipe } from "../../api/recipeApi";
 import { useHistory, withRouter } from "react-router-dom";
 
-const RecipeList = ({ startRecipeEditing }) => {
+const RecipeList = () => {
   const history = useHistory();
   const recipes = useSelector((state) => state.recipes.list);
-  const editRecipe = (recipeId) => startRecipeEditing(recipeId);
 
   return (
     <RecipeWrapper>

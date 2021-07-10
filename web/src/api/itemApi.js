@@ -1,5 +1,6 @@
 import axios from "axios";
 import _ from "lodash";
+import { toast } from "react-toastify";
 import {
   setItemList,
   addItemToList,
@@ -40,7 +41,12 @@ export const deleteItem = (itemId, callback) => {
       dispatch(deleteItemFromList(itemId));
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      console.log(error.response.data.errors);
+      error.response.data.errors.forEach((message) => {
+        toast.info(message);
+      });
+    });
 };
 
 export const updateItem = (itemId, callback) => {

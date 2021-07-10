@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import _ from "lodash";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
 } from "react-router-dom";
+// import { ToastProvider, useToasts } from "react-toast-notifications";
+
+import { ToastContainer } from "react-toastify";
 
 import "./App.css";
-import RecipeEditorLegacy from "./components/RecipeEditorLegacy";
 import RecipeEditor from "./components/recipes/RecipeEditor";
 import RecipeCreator from "./components/recipes/RecipeCreator";
-import Items from "./components/Items";
-import Recipes from "./components/Recipes";
+import Items from "./components/items/Items";
+import Recipes from "./components/recipes/Recipes";
 
 import { fetchItems } from "./api/itemApi";
 import { fetchRecipes } from "./api/recipeApi";
@@ -22,48 +24,6 @@ const App = () => {
   axios.defaults.baseURL = "http://localhost:3000";
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
-  const [page, setPage] = useState("recipes");
-  const [editingRecipe, setEditingRecipe] = useState(false);
-  const [currentRecipeId, setCurrentRecipeId] = useState(null);
-  const [recipes, setRecipes] = useState([]);
-  const [recipeSavingEnabled, setRecipeSavingEnabled] =
-    useState(false);
-
-  const removeIngredientFromRecipe = (
-    recipeId,
-    deletedIngredientId,
-  ) => {
-    const recipeList = _.clone(recipes);
-
-    const targetRecipe = recipeList.find((recipe) => {
-      recipe.id === recipeId;
-    });
-
-    const ingredients = _.clone(targetRecipe.ingredients);
-    const targetIngredient = ingredients.find((ingredient) => {
-      deletedIngredientId === ingredient.id;
-    });
-
-    const index = ingredients.indexOf(targetIngredient);
-
-    if (index > -1) {
-      ingredients.splice(index, 1);
-      targetRecipe.ingredients = ingredients;
-      console.log(recipeList);
-      setRecipes(recipeList);
-    }
-  };
-
-  const initializeRecipeEditor = (recipeId) => {
-    setCurrentRecipeId(recipeId);
-    setEditingRecipe(true);
-  };
-
-  const cancelRecipeEditing = () => {
-    setCurrentRecipeId(null);
-    setEditingRecipe(false);
-  };
-
   useEffect(() => {
     fetchItems();
     fetchRecipes();
@@ -71,6 +31,7 @@ const App = () => {
 
   return (
     <PageWrapper>
+      {/* <ToastProvider> */}
       <Router>
         <Switch>
           <Route path="/items">
@@ -87,6 +48,8 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
+      <ToastContainer />
+      {/* </ToastProvider> */}
     </PageWrapper>
   );
 };

@@ -10,8 +10,9 @@ module V1
       render(status: status, json: {status: status}.merge(opts))
     end
 
-    def api_failure(errors: [], message: "", status: 400)
-      render(status: status, json: {status: status, message: message, error: errors})
+    def api_failure(resource: nil, message: "", status: 400)
+      errors = resource&.errors.present? ? resource.formatted_errors : nil
+      render(status: status, json: {status: status, message: message, errors: errors})
     end
 
     def api_not_found
