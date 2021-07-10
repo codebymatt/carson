@@ -9,6 +9,7 @@ import {
 } from "../state/itemState";
 
 import store from "../store";
+import { handleResourceErrors } from "./shared";
 
 const dispatch = (payload) => {
   store.dispatch(payload);
@@ -21,7 +22,7 @@ export const fetchItems = (callback) => {
       dispatch(setItemList(response.data.items));
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };
 
 export const createItem = (item, callback) => {
@@ -31,7 +32,7 @@ export const createItem = (item, callback) => {
       dispatch(addItemToList(response.data.item));
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };
 
 export const deleteItem = (itemId, callback) => {
@@ -41,12 +42,7 @@ export const deleteItem = (itemId, callback) => {
       dispatch(deleteItemFromList(itemId));
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => {
-      console.log(error.response.data.errors);
-      error.response.data.errors.forEach((message) => {
-        toast.info(message);
-      });
-    });
+    .catch(handleResourceErrors);
 };
 
 export const updateItem = (itemId, callback) => {
@@ -56,5 +52,5 @@ export const updateItem = (itemId, callback) => {
       dispatch(updateItemInList(response.data.item));
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };

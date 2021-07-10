@@ -2,6 +2,8 @@
 
 # Handles list functionality.
 class List < ApplicationRecord
+  include CarsonModel
+
   LIST_TYPES = ["shopping"].freeze
 
   has_many :list_items

@@ -9,7 +9,8 @@ import {
 } from "react-router-dom";
 // import { ToastProvider, useToasts } from "react-toast-notifications";
 
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./App.css";
 import RecipeEditor from "./components/recipes/RecipeEditor";
@@ -24,6 +25,25 @@ const App = () => {
   axios.defaults.baseURL = "http://localhost:3000";
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
+  // axios.interceptors.response.use(
+  //   (response) => {
+  //     return response;
+  //   },
+  //   (error) => {
+  //     if (!_.isNil(error.response.data.errors)) {
+  //       error.response.data.errors.forEach((message) => {
+  //         toast.error(message);
+  //       });
+  //     }
+
+  //     if (!_.is_nil(error.response.data.error)) {
+  //       toast.error(error.response.data.error);
+  //     }
+
+  //     return Promise.reject(error);
+  //   },
+  // );
+
   useEffect(() => {
     fetchItems();
     fetchRecipes();
@@ -31,7 +51,6 @@ const App = () => {
 
   return (
     <PageWrapper>
-      {/* <ToastProvider> */}
       <Router>
         <Switch>
           <Route path="/items">
@@ -48,8 +67,7 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
-      <ToastContainer />
-      {/* </ToastProvider> */}
+      <ToastContainer position="bottom-center" autoClose={3000} />
     </PageWrapper>
   );
 };

@@ -16,7 +16,7 @@ module V1
       if @recipe.save
         api_success(recipe: @recipe.serialize)
       else
-        api_failure(errors: @recipe.errors)
+        api_failure(resource: @recipe)
       end
     end
 
@@ -28,7 +28,7 @@ module V1
       if @recipe.update(allowed_params)
         api_success(recipe: @recipe)
       else
-        api_failure(errors: @recipe.errors)
+        api_failure(resource: @recipe)
       end
     end
 
@@ -36,7 +36,7 @@ module V1
       if @recipe.destroy
         api_success(recipe: @recipe.serialize)
       else
-        api_failure(errors: @recipe.errors)
+        api_failure(resource: @recipe)
       end
     end
 

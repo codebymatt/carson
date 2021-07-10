@@ -2,6 +2,8 @@
 
 # Holds behaviour and data for recipe items.
 class RecipeItem < ApplicationRecord
+  include CarsonModel
+
   belongs_to :recipe
   belongs_to :item
 

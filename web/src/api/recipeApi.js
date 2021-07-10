@@ -8,6 +8,7 @@ import {
 } from "../state/recipeState";
 
 import store from "../store";
+import { handleResourceErrors, notifySuccess } from "./shared";
 
 const dispatch = (payload) => {
   store.dispatch(payload);
@@ -20,7 +21,7 @@ export const fetchRecipes = (callback) => {
       dispatch(setRecipeList(response.data.recipes));
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };
 
 export const createRecipe = (recipe, callback) => {
@@ -28,9 +29,10 @@ export const createRecipe = (recipe, callback) => {
     .post("/v1/recipes.json", { recipe: recipe })
     .then((response) => {
       dispatch(addRecipeToList(response.data.recipe));
+      notifySuccess("Recipe successfully added!");
       if (!_.isNil(callback)) callback(response.data.recipe.id);
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };
 
 export const deleteRecipe = (recipeId, callback) => {
@@ -40,7 +42,7 @@ export const deleteRecipe = (recipeId, callback) => {
       dispatch(deleteRecipeFromList(recipeId));
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };
 
 export const updateRecipe = (recipeId, callback) => {
@@ -50,5 +52,5 @@ export const updateRecipe = (recipeId, callback) => {
       dispatch(updateRecipeInList(response.data.recipe));
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };

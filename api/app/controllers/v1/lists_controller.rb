@@ -16,7 +16,7 @@ module V1
       if @list.save
         api_success(list: @list.serialize)
       else
-        api_failure(errors: @list.errors)
+        api_failure(resource: @list)
       end
     end
 
@@ -28,7 +28,7 @@ module V1
       if @list.update(allowed_params)
         api_success(list: @list)
       else
-        api_failure(errors: @list.errors)
+        api_failure(resource: @list)
       end
     end
 
@@ -36,7 +36,7 @@ module V1
       if @list.destroy
         api_success(list: @list.serialize)
       else
-        api_failure(errors: @list.errors)
+        api_failure(resource: @list)
       end
     end
 

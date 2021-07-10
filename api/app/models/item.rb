@@ -2,6 +2,8 @@
 
 # Base class representing items.
 class Item < ApplicationRecord
+  include CarsonModel
+
   validates :name, presence: true, uniqueness: true
   has_many :recipe_items
   before_destroy :ensure_no_associated_recipes
@@ -12,10 +14,6 @@ class Item < ApplicationRecord
       name: name,
       created_at: created_at
     }
-  end
-
-  def formatted_errors
-    errors.flat_map(&:type)
   end
 
   private

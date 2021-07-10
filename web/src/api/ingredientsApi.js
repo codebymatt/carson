@@ -7,6 +7,7 @@ import {
 } from "../state/recipeState";
 
 import store from "../store";
+import { handleResourceErrors } from "./shared";
 
 const dispatch = (payload) => {
   store.dispatch(payload);
@@ -27,7 +28,7 @@ export const addIngredient = (recipeId, ingredient, callback) => {
 
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };
 
 export const deleteIngredient = (
@@ -48,7 +49,7 @@ export const deleteIngredient = (
       );
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };
 
 export const updateIngredient = (recipeId, ingredient, callback) => {
@@ -67,5 +68,5 @@ export const updateIngredient = (recipeId, ingredient, callback) => {
 
       if (!_.isNil(callback)) callback();
     })
-    .catch((error) => console.log(error));
+    .catch(handleResourceErrors);
 };
