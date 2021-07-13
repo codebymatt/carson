@@ -9,7 +9,7 @@ import Icon from "../shared/Icon";
 import {
   updateIngredient,
   deleteIngredient,
-} from "../../api/ingredientsApi";
+} from "../../api/ingredientApi";
 
 import IngredientInputs from "./IngredientInputs";
 
@@ -57,7 +57,7 @@ const IngredientEditor = ({ ingredient, closeFunc }) => {
           handleFunc={() =>
             deleteIngredient(
               ingredient.recipe_id,
-              ingredient,
+              ingredient.id,
               closeFunc,
             )
           }

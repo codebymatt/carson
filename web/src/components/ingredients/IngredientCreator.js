@@ -8,7 +8,7 @@ import availableUnits from "./availableUnits";
 
 import IngredientInputs from "./IngredientInputs";
 
-import { addIngredient } from "../../api/ingredientsApi";
+import { addIngredient } from "../../api/ingredientApi";
 
 const IngredientCreator = ({ closeFunc, recipeId }) => {
   const availableItems = useSelector((state) => state.items.list);

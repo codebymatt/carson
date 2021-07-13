@@ -12,8 +12,12 @@ class RecipeItem < ApplicationRecord
 
   delegate :name, to: :item
 
+  def formatted_quantity
+    quantity.to_i == quantity ? quantity.to_i : quantity
+  end
+
   def full_description
-    base_description = "#{quantity} #{unit} #{name}"
+    base_description = "#{formatted_quantity} #{unit} #{name}"
     additional_description = description.present? ? "(#{description})" : ""
 
     "#{base_description} #{additional_description}"
@@ -23,7 +27,7 @@ class RecipeItem < ApplicationRecord
     {
       id: id,
       name: name,
-      quantity: quantity,
+      quantity: formatted_quantity,
       unit: unit,
       description: description,
       recipe_id: recipe.id,
