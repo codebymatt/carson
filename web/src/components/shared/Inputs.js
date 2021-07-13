@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Select from "react-select";
+import _ from "lodash";
 
 export const TextInput = ({
   placeholder = "",
@@ -64,7 +65,7 @@ export const SelectInput = ({
 const LabelledInput = ({ label, component }) => {
   return (
     <InputWrapper>
-      <Label>{label || "Text"}</Label>
+      {!_.isNil(label) && <Label>{label || "Text"}</Label>}
       {component}
     </InputWrapper>
   );

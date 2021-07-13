@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { InnerPageWrapper } from "../shared/Wrappers";
-import AddItem from "./AddItem";
+import ItemCreator from "./ItemCreator";
 import NavHeader from "../NavHeader";
 import ItemList from "./ItemList";
 
@@ -18,7 +18,7 @@ const Items = () => {
         }}
       />
       {addingItem && (
-        <AddItem toggleItemAddition={toggleItemAddition} />
+        <ItemCreator toggleItemAddition={toggleItemAddition} />
       )}
       <ItemList />
     </InnerPageWrapper>

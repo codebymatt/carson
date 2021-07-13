@@ -8,7 +8,7 @@ import { TextInput } from "../shared/Inputs";
 import { ActionButton, SecondaryButton } from "../shared/Buttons";
 import { createItem } from "../../api/itemApi";
 
-const AddItem = ({ toggleItemAddition }) => {
+const ItemCreator = ({ toggleItemAddition }) => {
   const [itemName, setItemName] = useState("");
   const resetInputs = () => setItemName("");
 
@@ -37,7 +37,7 @@ const AddItem = ({ toggleItemAddition }) => {
   );
 };
 
-export default AddItem;
+export default ItemCreator;
 
 const OuterWrapper = styled(Card)`
   width: 100%;

@@ -45,9 +45,11 @@ export const deleteItem = (itemId, callback) => {
     .catch(handleResourceErrors);
 };
 
-export const updateItem = (itemId, callback) => {
+export const updateItem = (itemId, itemName, callback) => {
   axios
-    .put(`/v1/items/${itemId}.json`)
+    .put(`/v1/items/${itemId}.json`, {
+      item: { id: itemId, name: itemName },
+    })
     .then((response) => {
       dispatch(updateItemInList(response.data.item));
       if (!_.isNil(callback)) callback();
