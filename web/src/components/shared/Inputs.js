@@ -76,7 +76,6 @@ const InputWrapper = styled.div``;
 const Label = styled.h4`
   margin-bottom: 0.2rem;
   font-weight: 400;
-  // padding-left: 0.5rem;
 `;
 
 const selectStyles = {
@@ -92,13 +91,13 @@ const StyledSelect = styled(Select)`
 
 const StyledInput = styled.input`
   height: 2.5rem;
-  max-width: 10rem;
   padding-left: 0.5rem;
   font-size: 1rem;
   border-color: hsl(0, 0%, 80%);
   border-radius: 4px;
   border-style: solid;
   border-width: 1px;
+  width: 100%;
 
   &:focus {
     outline: 0 !important;

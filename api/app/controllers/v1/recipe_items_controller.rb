@@ -17,7 +17,7 @@ module V1
       if recipe_item.save
         api_success(recipe_item: recipe_item.serialize)
       else
-        api_failure(errors: recipe_item.errors)
+        api_failure(resource: recipe_item)
       end
     end
 

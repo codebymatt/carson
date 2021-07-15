@@ -25,25 +25,6 @@ const App = () => {
   axios.defaults.baseURL = "http://localhost:3000";
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
-  // axios.interceptors.response.use(
-  //   (response) => {
-  //     return response;
-  //   },
-  //   (error) => {
-  //     if (!_.isNil(error.response.data.errors)) {
-  //       error.response.data.errors.forEach((message) => {
-  //         toast.error(message);
-  //       });
-  //     }
-
-  //     if (!_.is_nil(error.response.data.error)) {
-  //       toast.error(error.response.data.error);
-  //     }
-
-  //     return Promise.reject(error);
-  //   },
-  // );
-
   useEffect(() => {
     fetchItems();
     fetchRecipes();

@@ -29,7 +29,11 @@ const RecipeEditor = () => {
 
   return (
     <InnerPageWrapper>
-      <Header savingEnabled={savingEnabled} saveFunc={onCreate} />
+      <Header
+        savingEnabled={savingEnabled}
+        saveFunc={onCreate}
+        title="New Recipe"
+      />
       <RecipeInputs
         name={name}
         setName={setName}

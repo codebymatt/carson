@@ -10,6 +10,7 @@ import Header from "./Header";
 import RecipeInputs from "./RecipeInputs";
 import IngredientCreator from "../ingredients/IngredientCreator";
 import Ingredient from "../ingredients/Ingredient";
+import { updateRecipe } from "../../api/recipeApi";
 
 const RecipeEditor = () => {
   // TODO: Eventually add support for recipe deep linking.
@@ -22,6 +23,11 @@ const RecipeEditor = () => {
 
   const [savingEnabled, setSavingEnabled] = useState(false);
   const [addingIngredient, setAddingIngredient] = useState(false);
+
+  const saveRecipe = () =>
+    updateRecipe({ id: id, name: name, link: link }, () =>
+      setSavingEnabled(false),
+    );
 
   useEffect(() => {
     const inputsChanged = name != recipe.name || link != recipe.link;
@@ -39,7 +45,11 @@ const RecipeEditor = () => {
 
   return (
     <InnerPageWrapper>
-      <Header savingEnabled={savingEnabled} />
+      <Header
+        savingEnabled={savingEnabled}
+        saveRecipe={saveRecipe}
+        title="Edit Recipe"
+      />
       <RecipeInputs
         name={name}
         setName={setName}

@@ -26,7 +26,7 @@ module V1
 
     def update
       if @recipe.update(allowed_params)
-        api_success(recipe: @recipe)
+        api_success(recipe: @recipe.serialize)
       else
         api_failure(resource: @recipe)
       end

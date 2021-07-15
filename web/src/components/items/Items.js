@@ -12,6 +12,7 @@ const Items = () => {
   return (
     <InnerPageWrapper>
       <NavHeader
+        title="Items"
         currentPage="item"
         addFunction={() => {
           setAddingItem(true);

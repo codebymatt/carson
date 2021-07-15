@@ -35,7 +35,7 @@ const IngredientInputs = ({
         <InputWrapper>
           <NumericInput
             label="Quantity"
-            placeholder={1}
+            // placeholder={1}
             value={ingredient.quantity}
             updateFunc={(value) =>
               setIngredientValue("quantity", value)
@@ -60,7 +60,7 @@ const IngredientInputs = ({
             label="Name"
             options={itemOptions}
             updateFunc={(value) =>
-              setIngredientValue("itemId", value)
+              setIngredientValue("item_id", value)
             }
           />
         </InputWrapper>

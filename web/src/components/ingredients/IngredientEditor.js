@@ -77,6 +77,7 @@ const IngredientEditor = ({ ingredient, closeFunc }) => {
 export default IngredientEditor;
 
 const OuterWrapper = styled(Card)`
+  margin-top: 1rem;
   width: 100%;
   padding: 1rem;
 `;

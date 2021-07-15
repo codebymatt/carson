@@ -13,7 +13,11 @@ const Item = ({ item }) => {
   return (
     <>
       {!editing && (
-        <ShowItem setEditing={setEditing} itemName={item.name} />
+        <ShowItem
+          setEditing={setEditing}
+          itemId={item.id}
+          itemName={item.name}
+        />
       )}
       {editing && (
         <EditItem
@@ -28,7 +32,7 @@ const Item = ({ item }) => {
 
 export default Item;
 
-const ShowItem = ({ setEditing, itemName }) => {
+const ShowItem = ({ setEditing, itemId, itemName }) => {
   return (
     <ItemWrapper>
       <ItemName>{itemName}</ItemName>
@@ -46,7 +50,7 @@ const ShowItem = ({ setEditing, itemName }) => {
             icon={<FiTrash />}
             label="Delete item"
             size="small"
-            handleFunc={() => deleteItem(item.id)}
+            handleFunc={() => deleteItem(itemId)}
           />
         </IconWrapper>
       </IconContainer>
@@ -56,11 +60,17 @@ const ShowItem = ({ setEditing, itemName }) => {
 
 const EditItem = ({ setEditing, itemId, itemName }) => {
   const [itemNameCopy, setItemNameCopy] = useState("");
+  const [canSave, setCanSave] = useState(false);
 
   const saveChanges = () => {
     const closeFunc = setEditing(false);
     updateItem(itemId, itemNameCopy, closeFunc);
   };
+
+  useEffect(() => {
+    const nameUnchanged = itemNameCopy === itemName;
+    setCanSave(!nameUnchanged);
+  }, [itemNameCopy]);
 
   useEffect(() => {
     setItemNameCopy(itemName);
@@ -80,6 +90,7 @@ const EditItem = ({ setEditing, itemId, itemName }) => {
             icon={<FiCheckCircle />}
             label="Save item"
             size="small"
+            disabled={!canSave}
             handleFunc={saveChanges}
           />
         </IconWrapper>
@@ -115,5 +126,5 @@ const IconContainer = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  margin-left: 0.5rem;
+  margin-left: 1rem;
 `;

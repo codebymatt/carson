@@ -40,16 +40,18 @@ export const deleteRecipe = (recipeId, callback) => {
     .delete(`/v1/recipes/${recipeId}.json`)
     .then(() => {
       dispatch(deleteRecipeFromList(recipeId));
+      notifySuccess("Recipe successfully deleted!");
       if (!_.isNil(callback)) callback();
     })
     .catch(handleResourceErrors);
 };
 
-export const updateRecipe = (recipeId, callback) => {
+export const updateRecipe = (recipe, callback) => {
   axios
-    .put(`/v1/recipes/${recipeId}.json`)
+    .put(`/v1/recipes/${recipe.id}.json`, { recipe: recipe })
     .then((response) => {
       dispatch(updateRecipeInList(response.data.recipe));
+      notifySuccess("Recipe successfully saved!");
       if (!_.isNil(callback)) callback();
     })
     .catch(handleResourceErrors);

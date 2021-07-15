@@ -15,7 +15,11 @@ const Recipes = () => {
   };
   return (
     <InnerPageWrapper>
-      <NavHeader currentPage="recipe" addFunction={addRecipe} />
+      <NavHeader
+        currentPage="recipe"
+        addFunction={addRecipe}
+        title="Recipes"
+      />
       <RecipeList />
     </InnerPageWrapper>
   );

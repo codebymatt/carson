@@ -6,19 +6,19 @@ import { useHistory, withRouter } from "react-router-dom";
 import Logo from "../shared/Logo";
 import Icon from "../shared/Icon";
 
-const Header = ({ savingEnabled, saveFunc }) => {
+const Header = ({ savingEnabled, saveRecipe, title }) => {
   const history = useHistory();
 
   return (
     <HeaderWrapper>
-      <Logo />
+      <Logo text={title} />
       <IconContainer>
         <IconWrapper>
           <Icon
             icon={<FiCheckCircle />}
             size="medium"
             label="Save recipe"
-            handleFunc={saveFunc}
+            handleFunc={saveRecipe}
             disabled={!savingEnabled}
           />
         </IconWrapper>

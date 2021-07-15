@@ -7,7 +7,7 @@ import {
 } from "../state/recipeState";
 
 import store from "../store";
-import { handleResourceErrors } from "./shared";
+import { handleResourceErrors, notifySuccess } from "./shared";
 
 const dispatch = (payload) => {
   store.dispatch(payload);
@@ -25,7 +25,7 @@ export const addIngredient = (recipeId, ingredient, callback) => {
           ingredient: response.data.recipe_item,
         }),
       );
-
+      notifySuccess("Ingredient successfully added!");
       if (!_.isNil(callback)) callback();
     })
     .catch(handleResourceErrors);

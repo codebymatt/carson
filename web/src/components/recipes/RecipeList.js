@@ -51,7 +51,8 @@ export default withRouter(RecipeList);
 const RecipeWrapper = styled.div``;
 
 const Recipe = styled(Card)`
-  padding: 1.2rem 1rem;
+  padding: 0.5rem 1rem;
+  height: 4rem;
   margin-top: 1rem;
   background-color: white;
   display: flex;

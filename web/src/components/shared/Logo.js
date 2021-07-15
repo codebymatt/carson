@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const Logo = () => {
-  return <LogoWrapper>CARSON</LogoWrapper>;
+const Logo = ({ text }) => {
+  return <LogoWrapper>{text}</LogoWrapper>;
 };
 
 export default Logo;

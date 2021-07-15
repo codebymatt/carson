@@ -10,10 +10,11 @@ import Logo from "./shared/Logo";
 const NavHeader = ({
   currentPage = "recipe",
   addFunction = () => {},
+  title = "CARSON",
 }) => {
   return (
     <HeaderWrapper>
-      <Logo />
+      <Logo text={title} />
       <IconContainer>
         {currentPage === "recipe" && (
           <IconWrapper>

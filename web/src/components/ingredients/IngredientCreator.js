@@ -4,7 +4,6 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 
 import Card from "../shared/Card";
-import availableUnits from "./availableUnits";
 
 import IngredientInputs from "./IngredientInputs";
 
@@ -18,14 +17,10 @@ const IngredientCreator = ({ closeFunc, recipeId }) => {
   const setValue = (key, value) =>
     setIngredient({ ...ingredient, [key]: value });
 
-  const saveIngredient = () =>
-    addIngredient(recipeId, ingredient, resetInputs);
+  const resetInputs = () => setIngredient({});
 
-  const resetInputs = () => {
-    setQuantity(1);
-    setUnit(availableUnits[0]);
-    setDescription("");
-    setItemId(_.keys(availableItems)[0]);
+  const saveIngredient = () => {
+    addIngredient(recipeId, ingredient, resetInputs);
   };
 
   useEffect(() => {
@@ -38,7 +33,8 @@ const IngredientCreator = ({ closeFunc, recipeId }) => {
       });
 
       setItemOptions(options);
-      if (_.isNil(ingredient)) setItemId(_.keys(availableItems)[0]);
+      if (_.isNil(ingredient))
+        setValue("item_id", _.keys(availableItems)[0]);
     }
   }, [availableItems]);
 
