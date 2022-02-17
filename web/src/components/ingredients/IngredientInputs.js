@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import Card from "../shared/Card";
@@ -9,7 +9,11 @@ import {
 } from "../shared/Inputs";
 
 import availableUnits from "./availableUnits";
-import { ActionButton, SecondaryButton } from "../shared/Buttons";
+import {
+  ActionButton,
+  SecondaryButton,
+  InfoButton,
+} from "../shared/Buttons";
 
 const unitOptions = availableUnits.map((unit) => {
   return {
@@ -24,6 +28,7 @@ const IngredientInputs = ({
   closeFunc,
   saveFunc,
   itemOptions,
+  enableItemAddition,
 }) => {
   const itemId = _.isNil(ingredient.itemId)
     ? ingredient.item_id
@@ -35,7 +40,6 @@ const IngredientInputs = ({
         <InputWrapper>
           <NumericInput
             label="Quantity"
-            // placeholder={1}
             value={ingredient.quantity}
             updateFunc={(value) =>
               setIngredientValue("quantity", value)
@@ -76,11 +80,17 @@ const IngredientInputs = ({
         </InputWrapper>
       </InputContainer>
       <ButtonContainer>
-        <ActionButton
-          text={ingredient === null ? "Add" : "Save"}
-          onClick={saveFunc}
+        <IngredientButtons>
+          <ActionButton
+            text={ingredient === null ? "Add" : "Save"}
+            onClick={saveFunc}
+          />
+          <SecondaryButton text="Cancel" onClick={closeFunc} />
+        </IngredientButtons>
+        <InfoButton
+          text="New ingredient"
+          onClick={enableItemAddition}
         />
-        <SecondaryButton text="Cancel" onClick={closeFunc} />
       </ButtonContainer>
     </>
   );
@@ -125,6 +135,11 @@ const Title = styled.h3`
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin-top: 1.5rem;
   align-items: center;
+`;
+
+const IngredientButtons = styled.div`
+  display: flex;
 `;

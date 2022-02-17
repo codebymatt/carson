@@ -8,6 +8,7 @@ import Card from "../shared/Card";
 import IngredientInputs from "./IngredientInputs";
 
 import { addIngredient } from "../../api/ingredientApi";
+import ItemCreator from "../items/ItemCreator";
 
 const IngredientCreator = ({ closeFunc, recipeId }) => {
   const availableItems = useSelector((state) => state.items.list);
@@ -22,6 +23,8 @@ const IngredientCreator = ({ closeFunc, recipeId }) => {
   const saveIngredient = () => {
     addIngredient(recipeId, ingredient, resetInputs);
   };
+
+  const [addingNewItem, setAddingNewItem] = useState(false);
 
   useEffect(() => {
     if (!_.isEmpty(availableItems)) {
@@ -39,16 +42,31 @@ const IngredientCreator = ({ closeFunc, recipeId }) => {
   }, [availableItems]);
 
   return (
-    <OuterWrapper>
-      <Title>Add Ingredient</Title>
-      <IngredientInputs
-        ingredient={ingredient}
-        closeFunc={closeFunc}
-        setIngredientValue={setValue}
-        itemOptions={itemOptions}
-        saveFunc={saveIngredient}
-      />
-    </OuterWrapper>
+    <>
+      {!addingNewItem && (
+        <OuterWrapper>
+          <Title>Add Ingredient</Title>
+          <IngredientInputs
+            ingredient={ingredient}
+            closeFunc={closeFunc}
+            setIngredientValue={setValue}
+            itemOptions={itemOptions}
+            saveFunc={saveIngredient}
+            enableItemAddition={() => {
+              setAddingNewItem(true);
+            }}
+          />
+        </OuterWrapper>
+      )}
+      {addingNewItem && (
+        <>
+          <ItemCreator
+            toggleItemAddition={() => setAddingNewItem(false)}
+          />
+        </>
+      )}
+    </>
+    // </OuterWrapper>
   );
 };
 

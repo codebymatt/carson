@@ -48,6 +48,7 @@ const RecipeEditor = () => {
       <Header
         savingEnabled={savingEnabled}
         saveRecipe={saveRecipe}
+        webLink={recipe.link}
         title="Edit Recipe"
       />
       <RecipeInputs

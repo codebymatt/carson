@@ -8,15 +8,15 @@ export const itemState = createSlice({
     setItemList: (state, action) => {
       state.list = action.payload.reduce((memo, item) => {
         return {
-          ...memo,
           [item.id]: item,
+          ...memo,
         };
       }, {});
     },
     addItemToList: (state, action) => {
       state.list = {
-        ...state.list,
         ...{ [action.payload.id]: action.payload },
+        ...state.list,
       };
     },
     deleteItemFromList: (state, action) => {

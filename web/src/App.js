@@ -20,6 +20,7 @@ import Recipes from "./components/recipes/Recipes";
 
 import { fetchItems } from "./api/itemApi";
 import { fetchRecipes } from "./api/recipeApi";
+import ShoppingList from "./components/shoppingList/ShoppingList";
 
 const App = () => {
   axios.defaults.baseURL = "http://localhost:3000";
@@ -36,6 +37,9 @@ const App = () => {
         <Switch>
           <Route path="/items">
             <Items />
+          </Route>
+          <Route path="/shopping-list">
+            <ShoppingList />
           </Route>
           <Route path={"/recipes/add"}>
             <RecipeCreator />

@@ -12,27 +12,34 @@ const ItemCreator = ({ toggleItemAddition }) => {
   const [itemName, setItemName] = useState("");
   const resetInputs = () => setItemName("");
 
-  const saveItem = async () => {
+  const saveItem = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     createItem({ name: itemName }, resetInputs);
   };
 
   return (
     <OuterWrapper>
-      <Title>Add Item</Title>
-      <InputContainer>
-        <InputWrapper>
-          <TextInput
-            value={itemName}
-            label="Name"
-            placeholder="Tomato"
-            updateFunc={setItemName}
+      <FormWrapper>
+        <Title>Add Item</Title>
+        <InputContainer>
+          <InputWrapper>
+            <TextInput
+              value={itemName}
+              label="Name"
+              placeholder="Tomato"
+              updateFunc={setItemName}
+            />
+          </InputWrapper>
+        </InputContainer>
+        <ButtonContainer>
+          <ActionButton text="Add" onClick={saveItem} />
+          <SecondaryButton
+            text="Cancel"
+            onClick={toggleItemAddition}
           />
-        </InputWrapper>
-      </InputContainer>
-      <ButtonContainer>
-        <ActionButton text="Add" onClick={saveItem} />
-        <SecondaryButton text="Cancel" onClick={toggleItemAddition} />
-      </ButtonContainer>
+        </ButtonContainer>
+      </FormWrapper>
     </OuterWrapper>
   );
 };
@@ -51,6 +58,8 @@ const Title = styled.h3`
     font-size: 1rem;
   }
 `;
+
+const FormWrapper = styled.form``;
 
 const InputContainer = styled.div`
   display: flex;

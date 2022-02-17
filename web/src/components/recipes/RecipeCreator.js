@@ -19,6 +19,7 @@ const RecipeEditor = () => {
       history.push(`/recipes/${recipeId}`);
     };
 
+    console.log("Hitting");
     createRecipe({ name: name, link: link }, switchToEditingMode);
   };
 
@@ -31,7 +32,7 @@ const RecipeEditor = () => {
     <InnerPageWrapper>
       <Header
         savingEnabled={savingEnabled}
-        saveFunc={onCreate}
+        saveRecipe={onCreate}
         title="New Recipe"
       />
       <RecipeInputs

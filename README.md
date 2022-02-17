@@ -11,7 +11,7 @@ Gems:
 - Faker
 - Rack CORS
 
-Oher setup
+Other setup
 
 - Add JSON_RESPONSE to APiHelper (rails_helper)
 - Add filepath for retest specs

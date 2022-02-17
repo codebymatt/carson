@@ -11,4 +11,5 @@ export default [
   "tin",
   "block",
   "clove",
-];
+  "cup",
+].sort((itemOne, itemTwo) => itemOne.localeCompare(itemTwo));

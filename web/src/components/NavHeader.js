@@ -2,7 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import { FiPlus, FiBookOpen, FiList } from "react-icons/fi";
+import {
+  FiPlus,
+  FiBookOpen,
+  FiList,
+  FiShoppingCart,
+} from "react-icons/fi";
 
 import Icon from "./shared/Icon";
 import Logo from "./shared/Logo";
@@ -16,14 +21,25 @@ const NavHeader = ({
     <HeaderWrapper>
       <Logo text={title} />
       <IconContainer>
-        {currentPage === "recipe" && (
+        {currentPage != "shoppingList" && (
+          <IconWrapper>
+            <UnstyledLink to="/shopping-list">
+              <Icon
+                icon={<FiShoppingCart />}
+                size="small"
+                label="Shopping list"
+              />
+            </UnstyledLink>
+          </IconWrapper>
+        )}
+        {currentPage != "item" && (
           <IconWrapper>
             <UnstyledLink to="/items">
               <Icon icon={<FiList />} size="medium" label="Items" />
             </UnstyledLink>
           </IconWrapper>
         )}
-        {currentPage === "item" && (
+        {currentPage !== "recipe" && (
           <IconWrapper>
             <UnstyledLink to="/recipes">
               <Icon
@@ -64,7 +80,7 @@ const IconContainer = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  margin-left: 1rem;
+  margin-left: 1.2rem;
 `;
 
 const UnstyledLink = styled(Link)`

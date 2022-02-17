@@ -1,9 +1,15 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-export const ActionButton = ({ text = "", onClick = () => {} }) => {
+export const ActionButton = ({
+  type = "",
+  text = "",
+  onClick = () => {},
+}) => {
   return (
-    <StyledActionButton onClick={onClick}>{text}</StyledActionButton>
+    <StyledActionButton type={type} onClick={onClick}>
+      {text}
+    </StyledActionButton>
   );
 };
 
@@ -64,5 +70,5 @@ const StyledInfoButton = styled.button`
   background-color: #ffffff;
   // color: #0069ed; // Blue
   color: black;
-  border: solid 1px #0069ed;
+  border: solid 1px black;
 `;

@@ -1,48 +1,48 @@
 import React from "react";
 import styled from "styled-components";
-import { FiX, FiCheckCircle, FiLink } from "react-icons/fi";
+import {
+  FiX,
+  FiCheckCircle,
+  FiTrash,
+  FiPlus,
+  FiPlusCircle,
+  FiDownloadCloud,
+} from "react-icons/fi";
 import { useHistory, withRouter } from "react-router-dom";
 
 import Logo from "../shared/Logo";
 import Icon from "../shared/Icon";
 
-const Header = ({
-  savingEnabled,
-  saveRecipe,
-  title,
-  webLink = "",
-}) => {
+const ShoppingListHeader = ({ title }) => {
   const history = useHistory();
 
   return (
     <HeaderWrapper>
       <Logo text={title} />
       <IconContainer>
-        {webLink !== "" && (
-          <IconWrapper>
-            <Icon
-              icon={<FiLink />}
-              size="medium"
-              label="Visit linked site"
-              handleFunc={() => window.open(webLink, "_blank")}
-              // disabled={!savingEnabled}
-            />
-          </IconWrapper>
-        )}
         <IconWrapper>
           <Icon
-            icon={<FiCheckCircle />}
+            icon={<FiDownloadCloud />}
             size="medium"
-            label="Save recipe"
-            handleFunc={saveRecipe}
-            disabled={!savingEnabled}
+            label="Download shopping list"
+            // handleFunc={saveRecipe}
+            disabled
           />
         </IconWrapper>
         <IconWrapper>
           <Icon
-            icon={<FiX />}
+            icon={<FiPlus />}
             size="medium"
-            label="Cancel"
+            label="Save recipe"
+            // handleFunc={saveRecipe}
+            // disabled={!savingEnabled}
+          />
+        </IconWrapper>
+        <IconWrapper>
+          <Icon
+            icon={<FiTrash />}
+            size="medium"
+            label="Clear list"
             handleFunc={() => history.push("/recipes")}
           />
         </IconWrapper>
@@ -51,7 +51,7 @@ const Header = ({
   );
 };
 
-export default withRouter(Header);
+export default withRouter(ShoppingListHeader);
 
 const HeaderWrapper = styled.div`
   display: flex;
