@@ -19,20 +19,33 @@ const RecipeEditor = () => {
 
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
+  const [servings, setServings] = useState("");
+  const [calories, setCalories] = useState("");
   const [recipe, setRecipe] = useState({});
 
   const [savingEnabled, setSavingEnabled] = useState(false);
   const [addingIngredient, setAddingIngredient] = useState(false);
 
   const saveRecipe = () =>
-    updateRecipe({ id: id, name: name, link: link }, () =>
-      setSavingEnabled(false),
+    updateRecipe(
+      {
+        id: id,
+        name: name,
+        link: link,
+        calories: calories,
+        servings: servings,
+      },
+      () => setSavingEnabled(false),
     );
 
   useEffect(() => {
-    const inputsChanged = name != recipe.name || link != recipe.link;
+    const inputsChanged =
+      name != recipe.name ||
+      link != recipe.link ||
+      calories != recipe.calories ||
+      servings != recipe.servings;
     setSavingEnabled(inputsChanged);
-  }, [name, link]);
+  }, [name, link, calories, servings]);
 
   useEffect(() => {
     if (!_.isNil(recipes[id])) {
@@ -40,6 +53,8 @@ const RecipeEditor = () => {
       setRecipe(recipes[id]);
       setName(currentRecipe.name);
       setLink(currentRecipe.link);
+      setCalories(currentRecipe.calories);
+      setServings(currentRecipe.servings);
     }
   }, [recipes]);
 
@@ -56,6 +71,10 @@ const RecipeEditor = () => {
         setName={setName}
         link={link}
         setLink={setLink}
+        calories={calories}
+        setCalories={setCalories}
+        servings={servings}
+        setServings={setServings}
       />
       {!addingIngredient && (
         <ButtonWrapper>

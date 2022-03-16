@@ -13,11 +13,16 @@ class RecipeItem < ApplicationRecord
   delegate :name, to: :item
 
   def formatted_quantity
+    # Required to format integers properly (i.e. not in decimal notation)
     quantity.to_i == quantity ? quantity.to_i : quantity
   end
 
+  def base_description
+    pluralized_unit = unit.pluralize(quantity)
+    "#{formatted_quantity} #{pluralized_unit} #{name}"
+  end
+
   def full_description
-    base_description = "#{formatted_quantity} #{unit} #{name}"
     additional_description = description.present? ? "(#{description})" : ""
 
     "#{base_description} #{additional_description}"

@@ -17,6 +17,8 @@ class Recipe < ApplicationRecord
       id: id,
       name: name,
       link: link,
+      servings: servings,
+      calories: calories,
       created_at: created_at,
       updated_at: updated_at
     }

@@ -7,6 +7,7 @@ import {
   FiPlus,
   FiPlusCircle,
   FiDownloadCloud,
+  FiBookOpen,
 } from "react-icons/fi";
 import { useHistory, withRouter } from "react-router-dom";
 
@@ -41,6 +42,14 @@ const ShoppingListHeader = ({ title }) => {
         <IconWrapper>
           <Icon
             icon={<FiTrash />}
+            size="medium"
+            label="Clear list"
+            handleFunc={() => history.push("/recipes")}
+          />
+        </IconWrapper>
+        <IconWrapper>
+          <Icon
+            icon={<FiBookOpen />}
             size="medium"
             label="Clear list"
             handleFunc={() => history.push("/recipes")}

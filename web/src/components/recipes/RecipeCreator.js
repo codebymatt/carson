@@ -13,14 +13,23 @@ const RecipeEditor = () => {
   const [savingEnabled, setSavingEnabled] = useState(false);
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
+  const [servings, setServings] = useState(0);
+  const [calories, setCalories] = useState(0);
 
   const onCreate = () => {
     const switchToEditingMode = (recipeId) => {
       history.push(`/recipes/${recipeId}`);
     };
 
-    console.log("Hitting");
-    createRecipe({ name: name, link: link }, switchToEditingMode);
+    createRecipe(
+      {
+        name: name,
+        link: link,
+        servings: servings,
+        calories: calories,
+      },
+      switchToEditingMode,
+    );
   };
 
   useEffect(() => {
@@ -40,6 +49,10 @@ const RecipeEditor = () => {
         setName={setName}
         link={link}
         setLink={setLink}
+        servings={servings}
+        setServings={setServings}
+        calories={calories}
+        setCalories={setCalories}
       />
       <PlaceholderWrapper>
         Once you've given your recipe a name and saved it you can add

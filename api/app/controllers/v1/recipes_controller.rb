@@ -43,7 +43,7 @@ module V1
     private
 
     def allowed_params
-      params.require(:recipe).permit(:name, :link)
+      params.require(:recipe).permit(:name, :link, :servings, :calories)
     end
 
     def set_recipe
