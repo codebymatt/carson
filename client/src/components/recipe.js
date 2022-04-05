@@ -9,14 +9,21 @@ import Icon from "./shared/Icon";
 import { updateRecipeInList } from "../state/recipeState";
 import { useSelector } from "react-redux";
 import store from "../store";
+import { ingredientDescription } from "../utils/ingredientDescription";
 
 const Recipe = ({ recipe }) => {
   const recipeSelected = useSelector((state) => state.recipes.list[recipe.id].selected);
-
-  const setRecipeSelected = () =>
-    store.dispatch(updateRecipeInList({ ...recipe, selected: !recipeSelected }));
   const [opened, setOpened] = useState(false);
   const [updatedServings, setUpdatedServings] = useState(recipe.servings);
+
+  const setRecipeSelected = () =>
+    store.dispatch(
+      updateRecipeInList({
+        ...recipe,
+        selected: !recipeSelected,
+        updatedServings: updatedServings,
+      }),
+    );
 
   return (
     <Card shadow={1} radius={2} padding={3}>
@@ -103,30 +110,6 @@ const Ingredients = ({ ingredients, originalServings, updatedServings }) => {
       })}
     </Stack>
   );
-};
-
-const scaledValue = (value, originalServingCount, updatedServingCount) => {
-  if (!updatedServingCount) return value;
-
-  if (updatedServingCount == 0) return 0;
-
-  if (originalServingCount != updatedServingCount) {
-    const multiplier = (updatedServingCount * 1.0) / (originalServingCount * 1.0);
-    return +(value * multiplier).toFixed(2);
-  } else {
-    return +value.toFixed(2);
-  }
-};
-
-const ingredientDescription = (ingredient, originalServingCount, updatedServingCount) => {
-  const { name, namePlural, unitSingular, unitPlural, value, description } = ingredient;
-
-  const requiredValue = scaledValue(value, originalServingCount, updatedServingCount);
-
-  const requiredName = requiredValue > 1 && namePlural ? namePlural : name;
-  const requiredUnit = requiredValue > 1 && unitPlural ? unitPlural : unitSingular;
-  const formattedDescription = description ? ` (${description})` : "";
-  return `${requiredValue} ${requiredUnit} ${requiredName} ${formattedDescription}`;
 };
 
 const IconWrapper = styled.div`

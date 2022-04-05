@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import _ from "lodash";
 import { useSelector } from "react-redux";
+import { ingredientDescription } from "../utils/ingredientDescription";
 
 import { Card, Heading, Stack, Text } from "@sanity/ui";
 
@@ -27,22 +28,14 @@ const reduceRecipes = (recipes) => {
 };
 
 const ShoppingList = () => {
-  // const listItems = useSelector((state) => state.shoppingList.items);
-  const listItems = [];
-  // const [listItems, setListItems] = useState([]);
-
-  // useEffect(() => {
-  //   const listItems = reduceRecipes(recipes);
-  //   setListItems(listItems);
-  // }, [recipes]);
+  const listItems = useSelector((state) => state.shoppingList.list);
 
   if (_.isEmpty(listItems)) return <Heading>Create shopping lists from the recipes tab!</Heading>;
 
   return (
     <Stack style={{ padding: "1rem 1rem" }} space={4}>
       {_.map(listItems, (item) => {
-        // return <Text>{ingredientDescription(ingredient, originalServings, updatedServings)}</Text>;
-        return <Text>{item.name}</Text>;
+        return <Text>{ingredientDescription(item, 1, 1)}</Text>;
       })}
     </Stack>
   );

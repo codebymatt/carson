@@ -4,6 +4,9 @@ import styled from "styled-components";
 import _ from "lodash";
 import { useSelector } from "react-redux";
 
+import { setShoppingList } from "./state/shoppingListState";
+import store from "./store";
+
 import {
   Box,
   Button,
@@ -20,12 +23,39 @@ import Recipe from "./components/recipe";
 
 import { fetchRecipes } from "./api/recipeApi";
 import ShoppingList from "./components/shoppingList";
+import { scaledValue } from "./utils/ingredientDescription";
 
 function App() {
   axios.defaults.baseURL = "https://zluobgom.api.sanity.io/v2022-04-01/data/query/production";
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
   const [tabId, setTabId] = useState("recipes");
+
+  const recipes = useSelector((state) => state.recipes.list);
+
+  const generateShoppingList = () => {
+    const ingredientList = _.reduce(
+      recipes,
+      (memo, recipe, recipeId) => {
+        recipe.ingredients.forEach((ingredient) => {
+          const ingredientValue = scaledValue(
+            ingredient.value,
+            recipe.servings,
+            recipe.updatedServings,
+          );
+          const key = `${ingredient.name}-${ingredient.unitSingular}`;
+          memo[key]
+            ? (memo[key].value += ingredientValue)
+            : (memo[key] = { ...ingredient, value: ingredientValue });
+        });
+
+        return memo;
+      },
+      {},
+    );
+
+    store.dispatch(setShoppingList(ingredientList));
+  };
 
   useEffect(() => {
     fetchRecipes();
@@ -37,7 +67,9 @@ function App() {
         <Box marginTop={4}>
           <Flex justify={"space-between"} align="center" style={{ minHeight: "2.5rem" }}>
             <TabToggle tabId={tabId} setTabId={setTabId} />
-            {tabId === "recipes" && <Button tone="positive" text="Generate List" />}
+            {tabId === "recipes" && (
+              <Button tone="positive" text="Generate List" onClick={() => generateShoppingList()} />
+            )}
           </Flex>
           <Card shadow={1} padding={4} radius={2} marginTop={4}>
             <RecipeTab tabId={tabId} />

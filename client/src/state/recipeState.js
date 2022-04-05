@@ -10,7 +10,12 @@ export const recipeState = createSlice({
         const recipeId = recipe._id;
         return {
           ...memo,
-          [recipeId]: { ...recipe, id: recipeId, selected: false },
+          [recipeId]: {
+            ...recipe,
+            id: recipeId,
+            selected: false,
+            updatedServings: recipe.servings,
+          },
         };
       }, {});
     },
