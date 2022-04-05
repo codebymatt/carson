@@ -1,0 +1,121 @@
+{
+  "ms": 75,
+  "query": "*[_type == 'recipe']{calories,\"ingredients\":ingredients[]{\"value\":value, \"name\":ingredientName-\u003ename, \"namePlural\": ingredientName-\u003eplural,\"unitPlural\": unit-\u003eplural,\"unitSingular\": unit-\u003eabbreviation}}",
+  "result": [
+    {
+      "_id": "82148e68-ba00-43ff-be59-0a5d6dbf4e3a",
+      "calories": 2820,
+      "link": "https://www.halfbakedharvest.com/roasted-tomato-basil-and-feta-orzo",
+      "name": "Tomato and Basil Orzo",
+      "servings": 6,
+      "ingredients": [
+        {
+          "name": "cherry tomato",
+          "namePlural": "cherry tomatoes",
+          "unitPlural": "cups",
+          "unitSingular": "cup",
+          "value": 4
+        },
+        {
+          "name": "garlic",
+          "namePlural": "garlic",
+          "unitPlural": "cloves",
+          "unitSingular": "clove",
+          "value": 4,
+          "description": "smashed, skin removed"
+        },
+        {
+          "name": "honey",
+          "namePlural": "honey",
+          "unitPlural": "tsp",
+          "unitSingular": "tsp",
+          "value": 3
+        },
+        {
+          "name": "olive oil",
+          "namePlural": null,
+          "unitPlural": "tbsp",
+          "unitSingular": "tbsp",
+          "value": 7
+        },
+        {
+          "name": "fresh thyme",
+          "namePlural": null,
+          "unitPlural": "tbsp",
+          "unitSingular": "tbsp",
+          "value": 2
+        },
+        {
+          "name": "chili powder",
+          "namePlural": null,
+          "unitPlural": "tsp",
+          "unitSingular": "tsp",
+          "value": 1
+        },
+        {
+          "name": "black pepper",
+          "namePlural": null,
+          "unitPlural": "pinches",
+          "unitSingular": "pinch",
+          "value": 1
+        },
+        {
+          "name": "orzo",
+          "namePlural": null,
+          "unitPlural": "grams",
+          "unitSingular": "gram",
+          "value": 500
+        },
+        {
+          "name": "red wine vinegar",
+          "namePlural": null,
+          "unitPlural": "tbsp",
+          "unitSingular": "tbsp",
+          "value": 2
+        },
+        {
+          "name": "shallot",
+          "namePlural": "shallots",
+          "unitPlural": "whole",
+          "unitSingular": "whole",
+          "value": 0.5
+        },
+        {
+          "name": "chili flakes",
+          "namePlural": "chili flakes",
+          "unitPlural": "pinches",
+          "unitSingular": "pinch",
+          "value": 1
+        },
+        {
+          "name": "fresh basil",
+          "namePlural": "fresh basil",
+          "unitPlural": "cups",
+          "unitSingular": "cup",
+          "value": 0.5
+        },
+        {
+          "name": "fresh dill",
+          "namePlural": "fresh dill",
+          "unitPlural": "cups",
+          "unitSingular": "cup",
+          "value": 0.5
+        },
+        {
+          "name": "feta",
+          "namePlural": null,
+          "unitPlural": "grams",
+          "unitSingular": "gram",
+          "value": 225
+        },
+        {
+          "name": "pine nuts",
+          "namePlural": null,
+          "unitPlural": "bags",
+          "unitSingular": "bag",
+          "value": 1
+        }
+      ]
+    }
+  ]
+}
