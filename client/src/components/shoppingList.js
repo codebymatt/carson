@@ -1,44 +1,44 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import _ from "lodash";
 import { useSelector } from "react-redux";
 import { ingredientDescription } from "../utils/ingredientDescription";
 
-import { Card, Heading, Stack, Text } from "@sanity/ui";
+import { Card, Checkbox, Flex, Heading, Stack, Text } from "@sanity/ui";
 
-const reduceRecipes = (recipes) => {
-  const items = _.reduce(
-    recipes,
-    (memo, recipe, recipeName) => {
-      recipe.ingredients.forEach((ingredient) => {
-        memo[ingredient.name]
-          ? (memo[ingredient.name].value += ingredient.value)
-          : (memo[ingredient.name] = ingredient);
-      });
-
-      return memo;
-    },
-    {},
-  );
-
-  console.log(items);
-  return items;
-
-  // return [{ name: "tomatoes" }, { name: "cucumbers" }];
-};
-
-const ShoppingList = () => {
+const ShoppingList = ({ hideChecked }) => {
   const listItems = useSelector((state) => state.shoppingList.list);
-
-  if (_.isEmpty(listItems)) return <Heading>Create shopping lists from the recipes tab!</Heading>;
+  if (_.isEmpty(listItems))
+    return <Heading>Select some recipes and generate a new shopping list!</Heading>;
 
   return (
     <Stack style={{ padding: "1rem 1rem" }} space={4}>
       {_.map(listItems, (item) => {
-        return <Text>{ingredientDescription(item, 1, 1)}</Text>;
+        return <Ingredient item={item} hideChecked={hideChecked} />;
       })}
     </Stack>
   );
 };
 
 export default ShoppingList;
+
+const Ingredient = ({ item, hideChecked }) => {
+  const [checked, setChecked] = useState(false);
+
+  const hideItem = hideChecked && checked;
+
+  const toggleChecked = () => setChecked(!checked);
+
+  return (
+    !hideItem && (
+      <Flex align={"center"}>
+        <Checkbox style={{ marginRight: "0.8rem" }} checked={checked} onClick={toggleChecked} />
+        <Text
+          muted={checked}
+          style={{ flex: 1, textDecoration: checked ? "line-through" : "none" }}
+        >
+          {ingredientDescription(item, 1, 1)}
+        </Text>
+      </Flex>
+    )
+  );
+};

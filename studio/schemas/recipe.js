@@ -1,3 +1,4 @@
+import source from "./source";
 import unit from "./unit";
 
 export default {
@@ -7,7 +8,26 @@ export default {
 
   fields: [
     { name: "name", title: "Name", type: "string" },
-    { name: "link", title: "Web link", type: "string" },
+    { name: "website", title: "Website?", type: "boolean" },
+    {
+      name: "link",
+      title: "Web link",
+      type: "string",
+      hidden: ({ document }) => !document.website,
+    },
+    {
+      name: "source",
+      title: "Source",
+      type: "reference",
+      hidden: ({ document }) => document.website,
+      to: [{ type: "source" }],
+      preview: {
+        select: {
+          title: "source.name",
+          subtitle: "source.type",
+        },
+      },
+    },
     { name: "servings", title: "Servings", type: "number" },
     { name: "calories", title: "Calories", type: "number" },
     {

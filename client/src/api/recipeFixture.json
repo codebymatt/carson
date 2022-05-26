@@ -5,9 +5,12 @@
     {
       "_id": "82148e68-ba00-43ff-be59-0a5d6dbf4e3a",
       "calories": 2820,
-      "link": "https://www.halfbakedharvest.com/roasted-tomato-basil-and-feta-orzo",
       "name": "Tomato and Basil Orzo",
       "servings": 6,
+      "link": "https://www.halfbakedharvest.com/roasted-tomato-basil-and-feta-orzo",
+      "sourceName": null,
+      "sourceType": null,
+      "website": true,
       "ingredients": [
         {
           "name": "cherry tomato",
@@ -114,6 +117,32 @@
           "unitPlural": "bags",
           "unitSingular": "bag",
           "value": 1
+        }
+      ]
+    },
+    {
+      "_id": "82148e68-ba00-43ff-abc-0a5d6dbf4e3a",
+      "calories": 365,
+      "name": "Olive Oil Hummus",
+      "servings": 1,
+      "link": null,
+      "sourceName": "So Vegan",
+      "sourceType": "app",
+      "website": false,
+      "ingredients": [
+        {
+          "name": "olive oil",
+          "namePlural": null,
+          "unitPlural": "tbsps",
+          "unitSingular": "tbsp",
+          "value": 1
+        },
+        {
+          "name": "hummus",
+          "namePlural": null,
+          "unitPlural": "grams",
+          "unitSingular": "gram",
+          "value": 100
         }
       ]
     }

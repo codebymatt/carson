@@ -1,8 +1,26 @@
-import { Box, Card, Flex, Heading, Radio, Stack, Text, TextInput } from "@sanity/ui";
-import React, { useState } from "react";
+import {
+  Badge,
+  Box,
+  Card,
+  Flex,
+  Heading,
+  Label,
+  Popover,
+  Radio,
+  Stack,
+  Text,
+  TextInput,
+} from "@sanity/ui";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import _ from "lodash";
-import { FiPlusCircle, FiMinusCircle, FiChevronDown, FiChevronRight } from "react-icons/fi";
+import _, { isNil } from "lodash";
+import {
+  FiPlusCircle,
+  FiMinusCircle,
+  FiChevronDown,
+  FiChevronRight,
+  FiExternalLink,
+} from "react-icons/fi";
 
 import RadioButton from "./shared/RadioButton";
 import Icon from "./shared/Icon";
@@ -16,7 +34,7 @@ const Recipe = ({ recipe }) => {
   const [opened, setOpened] = useState(false);
   const [updatedServings, setUpdatedServings] = useState(recipe.servings);
 
-  const setRecipeSelected = () =>
+  const setRecipeSelected = () => {
     store.dispatch(
       updateRecipeInList({
         ...recipe,
@@ -24,11 +42,23 @@ const Recipe = ({ recipe }) => {
         updatedServings: updatedServings,
       }),
     );
+  };
+
+  useEffect(() => {
+    if (updatedServings != recipe.updatedServings) {
+      store.dispatch(
+        updateRecipeInList({
+          ...recipe,
+          updatedServings: updatedServings,
+        }),
+      );
+    }
+  }, [updatedServings]);
 
   return (
-    <Card shadow={1} radius={2} padding={3}>
+    <Card shadow={1} radius={2} padding={2} marginTop={3}>
       <Header
-        recipeName={recipe.name}
+        recipe={recipe}
         recipeSelected={recipeSelected}
         setRecipeSelected={setRecipeSelected}
         recipeOpened={opened}
@@ -50,7 +80,7 @@ const Recipe = ({ recipe }) => {
 export default Recipe;
 
 const Header = ({
-  recipeName,
+  recipe,
   recipeSelected,
   setRecipeSelected,
   recipeOpened,
@@ -59,8 +89,9 @@ const Header = ({
   setUpdatedServings,
 }) => {
   return (
-    <Flex direction="row" justify={"space-between"}>
-      <Flex direction="row">
+    <Flex style={{ padding: "0.5rem 0.5rem" }} direction="row" justify={"space-between"}>
+      <Flex style={{ width: "40%" }} direction="row">
+        <Heading size={2}>{recipe.name}</Heading>
         <IconWrapper>
           <Icon
             icon={recipeOpened ? <FiChevronDown /> : <FiChevronRight />}
@@ -69,14 +100,26 @@ const Header = ({
             handleFunc={() => setRecipeOpened(!recipeOpened)}
           />
         </IconWrapper>
-        <Heading size={2}>{recipeName}</Heading>
       </Flex>
       <ServingAdjustor
+        style={{ width: "30%" }}
         updatedServings={updatedServings}
         setUpdatedServings={setUpdatedServings}
         recipeSelected={recipeSelected}
       />
-      <RadioButton selected={recipeSelected} setSelected={setRecipeSelected} />
+      <Flex align="center" justify="flex-end" style={{ width: "30%" }}>
+        {(isNil(recipe.website) || !recipe.website) && (
+          <Badge padding={2} style={{ marginRight: "1rem" }} tone="default">
+            {`${recipe.sourceName} (${recipe.sourceType})`}
+          </Badge>
+        )}
+        {recipe.website && (
+          <LinkWrapper href={recipe.link} target="_blank">
+            <LinkIcon icon={<FiExternalLink />} label="Recipe link" size="small" />
+          </LinkWrapper>
+        )}
+        <RadioButton selected={recipeSelected} setSelected={setRecipeSelected} />
+      </Flex>
     </Flex>
   );
 };
@@ -104,7 +147,7 @@ const ServingAdjustor = ({ updatedServings, setUpdatedServings, recipeSelected }
 
 const Ingredients = ({ ingredients, originalServings, updatedServings }) => {
   return (
-    <Stack style={{ padding: "1rem 2rem" }} space={4}>
+    <Stack style={{ padding: "1rem 0.5rem" }} space={4}>
       {_.map(ingredients, (ingredient) => {
         return <Text>{ingredientDescription(ingredient, originalServings, updatedServings)}</Text>;
       })}
@@ -113,6 +156,18 @@ const Ingredients = ({ ingredients, originalServings, updatedServings }) => {
 };
 
 const IconWrapper = styled.div`
-  margin-right: 0.5rem;
+  margin-left: 0.5rem;
   margin-top: -3px;
+`;
+
+const LinkWrapper = styled.a`
+  margin-top: 0.25rem;
+  margin-right: 1rem;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+`;
+
+const LinkIcon = styled(Icon)`
+  color: black;
 `;

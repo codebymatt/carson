@@ -83,6 +83,7 @@ api/config/master.key
 
 # dependencies
 /node_modules
+*/node_modules
 /.pnp
 .pnp.js
 
