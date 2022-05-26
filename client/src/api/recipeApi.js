@@ -11,20 +11,26 @@ const dispatch = (payload) => {
   store.dispatch(payload);
 };
 
+const productionQuery = `?query=*[_type == 'recipe']{_id,name,link,"sourceType":source->type, "sourceName":source->name, website,calories,"ingredients":ingredients[]{_id,description, "value":value, "name":ingredientName->name, "namePlural": ingredientName->plural,"unitPlural": unit->plural,"unitSingular": unit->abbreviation}}`;
+
 export const fetchRecipes = (callback) => {
-  // axios.get("?query=*[_type == 'recipe]").then((response) => {
-  //   console.log(response.data);
-  //   dispatch(setRecipeList(response.data.result));
-  //   if (!_.isNil(callback)) callback();
-  // });
-  // fetch("./recipeFixture.json", {
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Accept: "application/json",
-  //   },
-  // }).then((response) => {
-  //   console.log(response);
-  // });
-  // console.log(recipeData.result);
+  console.log(process.env.REACT_APP_ENVIRONMENT);
+  if (process.env.REACT_APP_ENVIRONMENT === "production") {
+    fetchRecipesFromApi(callback);
+  } else {
+    fetchFixtureData();
+  }
+};
+
+const fetchRecipesFromApi = (callback) => {
+  axios.get(productionQuery).then((response) => {
+    console.log(response.data);
+    dispatch(setRecipeList(response.data.result));
+    if (!_.isNil(callback)) callback();
+  });
+  console.log(recipeData.result);
+};
+
+const fetchFixtureData = () => {
   dispatch(setRecipeList(recipeData.result));
 };
