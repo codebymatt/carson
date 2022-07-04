@@ -3,7 +3,7 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { ingredientDescription } from "../utils/ingredientDescription";
 
-import { Card, Checkbox, Flex, Heading, Stack, Text } from "@sanity/ui";
+import { Checkbox, Flex, Heading, Stack, Text } from "@sanity/ui";
 
 const ShoppingList = ({ hideChecked }) => {
   const listItems = useSelector((state) => state.shoppingList.list);

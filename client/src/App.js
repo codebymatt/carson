@@ -12,7 +12,6 @@ import {
   Button,
   Card,
   Flex,
-  Heading,
   studioTheme,
   Tab,
   TabList,
@@ -26,7 +25,7 @@ import ShoppingList from "./components/shoppingList";
 import { scaledValue } from "./utils/ingredientDescription";
 
 function App() {
-  axios.defaults.baseURL = "https://zluobgom.api.sanity.io/v2022-04-01/data/query/production";
+  axios.defaults.baseURL = process.env.REACT_APP_SANITY_BASE_URL;
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
   const [tabId, setTabId] = useState("recipes");

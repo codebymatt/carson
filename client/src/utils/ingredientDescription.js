@@ -1,9 +1,9 @@
 export const scaledValue = (value, originalServingCount, updatedServingCount) => {
   if (!updatedServingCount) return value;
 
-  if (updatedServingCount == 0) return 0;
+  if (updatedServingCount === 0) return 0;
 
-  if (originalServingCount != updatedServingCount) {
+  if (originalServingCount !== updatedServingCount) {
     const multiplier = (updatedServingCount * 1.0) / (originalServingCount * 1.0);
     return +(value * multiplier).toFixed(2);
   } else {
@@ -21,5 +21,3 @@ export const ingredientDescription = (ingredient, originalServingCount, updatedS
   const formattedDescription = description ? ` (${description})` : "";
   return `${requiredValue} ${requiredUnit} ${requiredName} ${formattedDescription}`;
 };
-
-// export in÷gredientDescription;

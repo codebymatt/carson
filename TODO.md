@@ -6,6 +6,6 @@
 ## Quality of life
 
 - [ ] Make ingredient list submittable with CTRL + Enter
-- [ ] Improve error message for when ingredients exist
+- [ ] Improve error message when ingredients exist
 
 ## Bugs

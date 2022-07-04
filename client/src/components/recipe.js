@@ -4,12 +4,8 @@ import {
   Card,
   Flex,
   Heading,
-  Label,
-  Popover,
-  Radio,
   Stack,
   Text,
-  TextInput,
 } from "@sanity/ui";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -45,7 +41,7 @@ const Recipe = ({ recipe }) => {
   };
 
   useEffect(() => {
-    if (updatedServings != recipe.updatedServings) {
+    if (updatedServings !== recipe.updatedServings) {
       store.dispatch(
         updateRecipeInList({
           ...recipe,
@@ -53,7 +49,7 @@ const Recipe = ({ recipe }) => {
         }),
       );
     }
-  }, [updatedServings]);
+  }, [recipe, updatedServings]);
 
   return (
     <Card shadow={1} radius={2} padding={2} marginTop={3}>
