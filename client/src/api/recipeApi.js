@@ -11,7 +11,7 @@ const dispatch = (payload) => {
   store.dispatch(payload);
 };
 
-const productionQuery = `?query=*[_type == 'recipe']{_id,name,link,servings,"sourceType":source->type, "sourceName":source->name, website,calories,"ingredients":ingredients[]{_id,description, "value":value, "name":ingredientName->name, "namePlural": ingredientName->plural,"unitPlural": unit->plural,"unitSingular": unit->abbreviation}}`;
+const productionQuery = `?query=*[_type == 'recipe']{_id,name,servings,tags[]->{name, "color": color.hex},link,"sourceType":source->type, "sourceName":source->name, website,calories,"ingredients":ingredients[]{_id,description, "value":value, "name":ingredientName->name, "namePlural": ingredientName->plural,"unitPlural": unit->plural,"unitSingular": unit->abbreviation}}`;
 
 export const fetchRecipes = (callback) => {
   console.log(process.env.REACT_APP_ENVIRONMENT);
