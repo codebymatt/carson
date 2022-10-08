@@ -4,8 +4,9 @@ import unit from "./unit";
 import item from "./item";
 import recipe from "./recipe";
 import source from "./source";
+import tag from "./tag";
 
 export default createSchema({
   name: "default",
-  types: schemaTypes.concat([unit, item, recipe, source]),
+  types: schemaTypes.concat([unit, item, recipe, source, tag]),
 });

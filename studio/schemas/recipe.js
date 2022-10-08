@@ -1,5 +1,6 @@
 import source from "./source";
 import unit from "./unit";
+import tag from "./tag";
 
 export default {
   title: "Recipe",
@@ -26,6 +27,15 @@ export default {
           title: "source.name",
           subtitle: "source.type",
         },
+      },
+    },
+    {
+      name: "tags",
+      title: "Tags",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "tag" }] }],
+      options: {
+        layout: "tags",
       },
     },
     { name: "servings", title: "Servings", type: "number" },

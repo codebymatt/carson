@@ -1,18 +1,44 @@
 {
-  "ms": 75,
-  "query": "*[_type == 'recipe']{calories,\"ingredients\":ingredients[]{\"value\":value, \"name\":ingredientName-\u003ename, \"namePlural\": ingredientName-\u003eplural,\"unitPlural\": unit-\u003eplural,\"unitSingular\": unit-\u003eabbreviation}}",
+  "ms": 425,
+  "query": "*[_type == 'recipe']{_id,name,servings,link,\"sourceType\":source-\u003etype, \"sourceName\":source-\u003ename, website,calories,\"ingredients\":ingredients[]{_id,description, \"value\":value, \"name\":ingredientName-\u003ename, \"namePlural\": ingredientName-\u003eplural,\"unitPlural\": unit-\u003eplural,\"unitSingular\": unit-\u003eabbreviation}}",
   "result": [
+    {
+      "_id": "7d4f5992-07b1-4d37-b8d6-fc96d48d2238",
+      "calories": 365,
+      "ingredients": [
+        {
+          "_id": null,
+          "description": null,
+          "name": "hummus",
+          "namePlural": null,
+          "unitPlural": "grams",
+          "unitSingular": "gram",
+          "value": 100
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "salt",
+          "namePlural": null,
+          "unitPlural": "pinches",
+          "unitSingular": "pinch",
+          "value": 1
+        }
+      ],
+      "link": null,
+      "name": "Matt's Hummus",
+      "servings": 1,
+      "sourceName": null,
+      "sourceType": null,
+      "website": false
+    },
     {
       "_id": "82148e68-ba00-43ff-be59-0a5d6dbf4e3a",
       "calories": 2820,
-      "name": "Tomato and Basil Orzo",
-      "servings": 6,
-      "link": "https://www.halfbakedharvest.com/roasted-tomato-basil-and-feta-orzo",
-      "sourceName": null,
-      "sourceType": null,
-      "website": true,
       "ingredients": [
         {
+          "_id": null,
+          "description": null,
           "name": "cherry tomato",
           "namePlural": "cherry tomatoes",
           "unitPlural": "cups",
@@ -20,14 +46,17 @@
           "value": 4
         },
         {
+          "_id": null,
+          "description": "smashed, skin removed",
           "name": "garlic",
           "namePlural": "garlic",
           "unitPlural": "cloves",
           "unitSingular": "clove",
-          "value": 4,
-          "description": "smashed, skin removed"
+          "value": 4
         },
         {
+          "_id": null,
+          "description": null,
           "name": "honey",
           "namePlural": "honey",
           "unitPlural": "tsp",
@@ -35,6 +64,8 @@
           "value": 3
         },
         {
+          "_id": null,
+          "description": null,
           "name": "olive oil",
           "namePlural": null,
           "unitPlural": "tbsp",
@@ -42,6 +73,8 @@
           "value": 7
         },
         {
+          "_id": null,
+          "description": null,
           "name": "fresh thyme",
           "namePlural": null,
           "unitPlural": "tbsp",
@@ -49,6 +82,8 @@
           "value": 2
         },
         {
+          "_id": null,
+          "description": null,
           "name": "chili powder",
           "namePlural": null,
           "unitPlural": "tsp",
@@ -56,6 +91,8 @@
           "value": 1
         },
         {
+          "_id": null,
+          "description": null,
           "name": "black pepper",
           "namePlural": null,
           "unitPlural": "pinches",
@@ -63,6 +100,8 @@
           "value": 1
         },
         {
+          "_id": null,
+          "description": null,
           "name": "orzo",
           "namePlural": null,
           "unitPlural": "grams",
@@ -70,6 +109,8 @@
           "value": 500
         },
         {
+          "_id": null,
+          "description": null,
           "name": "red wine vinegar",
           "namePlural": null,
           "unitPlural": "tbsp",
@@ -77,6 +118,8 @@
           "value": 2
         },
         {
+          "_id": null,
+          "description": "small, grated",
           "name": "shallot",
           "namePlural": "shallots",
           "unitPlural": "whole",
@@ -84,6 +127,8 @@
           "value": 0.5
         },
         {
+          "_id": null,
+          "description": null,
           "name": "chili flakes",
           "namePlural": "chili flakes",
           "unitPlural": "pinches",
@@ -91,6 +136,8 @@
           "value": 1
         },
         {
+          "_id": null,
+          "description": "roughly chopped",
           "name": "fresh basil",
           "namePlural": "fresh basil",
           "unitPlural": "cups",
@@ -98,6 +145,8 @@
           "value": 0.5
         },
         {
+          "_id": null,
+          "description": "roughly chopped",
           "name": "fresh dill",
           "namePlural": "fresh dill",
           "unitPlural": "cups",
@@ -105,6 +154,8 @@
           "value": 0.5
         },
         {
+          "_id": null,
+          "description": null,
           "name": "feta",
           "namePlural": null,
           "unitPlural": "grams",
@@ -112,39 +163,198 @@
           "value": 225
         },
         {
+          "_id": null,
+          "description": "toasted",
           "name": "pine nuts",
           "namePlural": null,
           "unitPlural": "bags",
           "unitSingular": "bag",
           "value": 1
         }
-      ]
+      ],
+      "link": "https://www.halfbakedharvest.com/roasted-tomato-basil-and-feta-orzo",
+      "name": "Tomato and Basil Orzo",
+      "servings": 6,
+      "sourceName": null,
+      "sourceType": null,
+      "website": true
     },
     {
-      "_id": "82148e68-ba00-43ff-abc-0a5d6dbf4e3a",
+      "_id": "drafts.7d4f5992-07b1-4d37-b8d6-fc96d48d2238",
       "calories": 365,
-      "name": "Olive Oil Hummus",
-      "servings": 1,
-      "link": null,
-      "sourceName": "So Vegan",
-      "sourceType": "app",
-      "website": false,
       "ingredients": [
         {
-          "name": "olive oil",
-          "namePlural": null,
-          "unitPlural": "tbsps",
-          "unitSingular": "tbsp",
-          "value": 1
-        },
-        {
+          "_id": null,
+          "description": null,
           "name": "hummus",
           "namePlural": null,
           "unitPlural": "grams",
           "unitSingular": "gram",
-          "value": 50
+          "value": 100
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "salt",
+          "namePlural": null,
+          "unitPlural": "pinches",
+          "unitSingular": "pinch",
+          "value": 1
         }
-      ]
+      ],
+      "link": null,
+      "name": "Matt's Hummus",
+      "servings": 1,
+      "sourceName": null,
+      "sourceType": null,
+      "website": false
+    },
+    {
+      "_id": "drafts.82148e68-ba00-43ff-be59-0a5d6dbf4e3a",
+      "calories": 2820,
+      "ingredients": [
+        {
+          "_id": null,
+          "description": null,
+          "name": "cherry tomato",
+          "namePlural": "cherry tomatoes",
+          "unitPlural": "cups",
+          "unitSingular": "cup",
+          "value": 4
+        },
+        {
+          "_id": null,
+          "description": "smashed, skin removed",
+          "name": "garlic",
+          "namePlural": "garlic",
+          "unitPlural": "cloves",
+          "unitSingular": "clove",
+          "value": 4
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "honey",
+          "namePlural": "honey",
+          "unitPlural": "tsp",
+          "unitSingular": "tsp",
+          "value": 3
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "olive oil",
+          "namePlural": null,
+          "unitPlural": "tbsp",
+          "unitSingular": "tbsp",
+          "value": 7
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "fresh thyme",
+          "namePlural": null,
+          "unitPlural": "tbsp",
+          "unitSingular": "tbsp",
+          "value": 2
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "chili powder",
+          "namePlural": null,
+          "unitPlural": "tsp",
+          "unitSingular": "tsp",
+          "value": 1
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "black pepper",
+          "namePlural": null,
+          "unitPlural": "pinches",
+          "unitSingular": "pinch",
+          "value": 1
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "orzo",
+          "namePlural": null,
+          "unitPlural": "grams",
+          "unitSingular": "gram",
+          "value": 500
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "red wine vinegar",
+          "namePlural": null,
+          "unitPlural": "tbsp",
+          "unitSingular": "tbsp",
+          "value": 2
+        },
+        {
+          "_id": null,
+          "description": "small, grated",
+          "name": "shallot",
+          "namePlural": "shallots",
+          "unitPlural": "whole",
+          "unitSingular": "whole",
+          "value": 0.5
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "chili flakes",
+          "namePlural": "chili flakes",
+          "unitPlural": "pinches",
+          "unitSingular": "pinch",
+          "value": 1
+        },
+        {
+          "_id": null,
+          "description": "roughly chopped",
+          "name": "fresh basil",
+          "namePlural": "fresh basil",
+          "unitPlural": "cups",
+          "unitSingular": "cup",
+          "value": 0.5
+        },
+        {
+          "_id": null,
+          "description": "roughly chopped",
+          "name": "fresh dill",
+          "namePlural": "fresh dill",
+          "unitPlural": "cups",
+          "unitSingular": "cup",
+          "value": 0.5
+        },
+        {
+          "_id": null,
+          "description": null,
+          "name": "feta",
+          "namePlural": null,
+          "unitPlural": "grams",
+          "unitSingular": "gram",
+          "value": 225
+        },
+        {
+          "_id": null,
+          "description": "toasted",
+          "name": "pine nuts",
+          "namePlural": null,
+          "unitPlural": "bags",
+          "unitSingular": "bag",
+          "value": 1
+        }
+      ],
+      "link": "https://www.halfbakedharvest.com/roasted-tomato-basil-and-feta-orzo",
+      "name": "Tomato and Basil Orzo",
+      "servings": 6,
+      "sourceName": null,
+      "sourceType": null,
+      "website": true
     }
   ]
 }
