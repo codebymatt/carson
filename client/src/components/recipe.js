@@ -1,12 +1,4 @@
-import {
-  Badge,
-  Box,
-  Card,
-  Flex,
-  Heading,
-  Stack,
-  Text,
-} from "@sanity/ui";
+import { Badge, Box, Card, Flex, Heading, Stack, Text } from "@sanity/ui";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import _, { isNil } from "lodash";
@@ -84,37 +76,46 @@ const Header = ({
   updatedServings,
   setUpdatedServings,
 }) => {
+  const showSource = (isNil(recipe.website) || !recipe.website) && !isNil(recipe.sourceType);
+
   return (
-    <Flex style={{ padding: "0.5rem 0.5rem" }} direction="row" justify={"space-between"}>
-      <Flex style={{ width: "40%" }} direction="row">
-        <Heading size={2}>{recipe.name}</Heading>
-        <IconWrapper>
-          <Icon
-            icon={recipeOpened ? <FiChevronDown /> : <FiChevronRight />}
-            label="Expand recipe"
-            size="medium"
-            handleFunc={() => setRecipeOpened(!recipeOpened)}
-          />
-        </IconWrapper>
+    <Flex style={{ padding: "0.5rem 0.5rem" }} direction="column">
+      <Flex direction="row" justify={"space-between"}>
+        <Flex style={{ width: "40%" }} direction="row">
+          <Heading size={2}>{recipe.name}</Heading>
+          <IconWrapper>
+            <Icon
+              icon={recipeOpened ? <FiChevronDown /> : <FiChevronRight />}
+              label="Expand recipe"
+              size="medium"
+              handleFunc={() => setRecipeOpened(!recipeOpened)}
+            />
+          </IconWrapper>
+        </Flex>
+        <ServingAdjustor
+          style={{ width: "30%" }}
+          updatedServings={updatedServings}
+          setUpdatedServings={setUpdatedServings}
+          recipeSelected={recipeSelected}
+        />
+        <Flex align="center" justify="flex-end" style={{ width: "30%" }}>
+          {showSource && (
+            <Badge padding={2} style={{ marginRight: "1rem" }} tone="default">
+              {`${recipe.sourceName} (${recipe.sourceType})`}
+            </Badge>
+          )}
+          {recipe.website && (
+            <LinkWrapper href={recipe.link} target="_blank">
+              <LinkIcon icon={<FiExternalLink />} label="Recipe link" size="small" />
+            </LinkWrapper>
+          )}
+          <RadioButton selected={recipeSelected} setSelected={setRecipeSelected} />
+        </Flex>
       </Flex>
-      <ServingAdjustor
-        style={{ width: "30%" }}
-        updatedServings={updatedServings}
-        setUpdatedServings={setUpdatedServings}
-        recipeSelected={recipeSelected}
-      />
-      <Flex align="center" justify="flex-end" style={{ width: "30%" }}>
-        {(isNil(recipe.website) || !recipe.website) && (
-          <Badge padding={2} style={{ marginRight: "1rem" }} tone="default">
-            {`${recipe.sourceName} (${recipe.sourceType})`}
-          </Badge>
-        )}
-        {recipe.website && (
-          <LinkWrapper href={recipe.link} target="_blank">
-            <LinkIcon icon={<FiExternalLink />} label="Recipe link" size="small" />
-          </LinkWrapper>
-        )}
-        <RadioButton selected={recipeSelected} setSelected={setRecipeSelected} />
+      <Flex style={{ marginTop: "0.5rem" }}>
+        {recipe.tags.map((tag) => (
+          <Tag tag={tag} />
+        ))}
       </Flex>
     </Flex>
   );
@@ -148,6 +149,24 @@ const Ingredients = ({ ingredients, originalServings, updatedServings }) => {
         return <Text>{ingredientDescription(ingredient, originalServings, updatedServings)}</Text>;
       })}
     </Stack>
+  );
+};
+
+const Tag = ({ tag }) => {
+  return (
+    <Box
+      style={{
+        fontSize: "0.8rem",
+        fontWeight: "bold",
+        padding: "0.4rem 0.7rem",
+        marginRight: "0.5rem",
+        color: "#fff",
+        borderRadius: "100rem",
+        backgroundColor: `${tag.color}`,
+      }}
+    >
+      {tag.name}
+    </Box>
   );
 };
 
