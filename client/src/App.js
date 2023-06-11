@@ -23,6 +23,7 @@ import Recipe from "./components/recipe";
 import { fetchRecipes } from "./api/recipeApi";
 import ShoppingList from "./components/shoppingList";
 import { scaledValue } from "./utils/ingredientDescription";
+import FilterInput from "./components/filter";
 
 function App() {
   axios.defaults.baseURL = process.env.REACT_APP_SANITY_BASE_URL;
@@ -32,6 +33,7 @@ function App() {
   const [hideChecked, setHideChecked] = useState(false);
 
   const recipes = useSelector((state) => state.recipes.list);
+  const nameFilterTerm = useSelector((state) => state.filters.name);
   const shoppingList = useSelector((state) => state.shoppingList.list);
   const [shoppingListPresent, setShoppingListPresent] = useState(false);
 
@@ -70,8 +72,12 @@ function App() {
   }, [shoppingList]);
 
   useEffect(() => {
-    fetchRecipes();
-  }, []);
+    var name = "";
+    if (nameFilterTerm !== undefined) {
+      name = nameFilterTerm;
+    }
+    fetchRecipes(name);
+  }, [nameFilterTerm]);
 
   return (
     <ThemeProvider theme={studioTheme}>
@@ -151,9 +157,12 @@ const RecipeTab = ({ tabId }) => {
   const recipes = useSelector((state) => state.recipes.list);
   return (
     <TabPanel hidden={tabId !== "recipes"}>
-      {_.map(recipes, (recipe) => {
-        return <Recipe recipe={recipe} />;
-      })}
+      <FilterInput type="name" />
+      <Box>
+        {_.map(recipes, (recipe) => {
+          return <Recipe recipe={recipe} />;
+        })}
+      </Box>
     </TabPanel>
   );
 };
