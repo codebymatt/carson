@@ -24,6 +24,7 @@ import { fetchRecipes } from "./api/recipeApi";
 import ShoppingList from "./components/shoppingList";
 import { scaledValue } from "./utils/ingredientDescription";
 import FilterInput from "./components/filter";
+import { setAvailableTags } from "./state/filterState";
 
 function App() {
   axios.defaults.baseURL = process.env.REACT_APP_SANITY_BASE_URL;
@@ -34,6 +35,7 @@ function App() {
 
   const recipes = useSelector((state) => state.recipes.list);
   const nameFilterTerm = useSelector((state) => state.filters.name);
+  const tagFilters = useSelector((state) => state.filters.tags);
   const shoppingList = useSelector((state) => state.shoppingList.list);
   const [shoppingListPresent, setShoppingListPresent] = useState(false);
 
@@ -72,12 +74,29 @@ function App() {
   }, [shoppingList]);
 
   useEffect(() => {
+    var tags = [];
+    if (tagFilters !== undefined) {
+      tags = tagFilters;
+    }
+
+    fetchRecipes("tags", tags);
+  }, [tagFilters]);
+
+  useEffect(() => {
     var name = "";
     if (nameFilterTerm !== undefined) {
       name = nameFilterTerm;
     }
-    fetchRecipes(name);
+    fetchRecipes("name", name);
   }, [nameFilterTerm]);
+
+  useEffect(() => {
+    axios
+      .get('?query=array::unique(*[_type == "tag"])[]{"id": name, "text": name}')
+      .then((response) => {
+        store.dispatch(setAvailableTags(response.data.result));
+      });
+  }, []);
 
   return (
     <ThemeProvider theme={studioTheme}>
@@ -157,10 +176,10 @@ const RecipeTab = ({ tabId }) => {
   const recipes = useSelector((state) => state.recipes.list);
   return (
     <TabPanel hidden={tabId !== "recipes"}>
-      <FilterInput type="name" />
+      <FilterInput type="tags" />
       <Box>
-        {_.map(recipes, (recipe) => {
-          return <Recipe recipe={recipe} />;
+        {_.map(recipes, (recipe, index) => {
+          return <Recipe key={index} recipe={recipe} />;
         })}
       </Box>
     </TabPanel>

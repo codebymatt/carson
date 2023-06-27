@@ -113,8 +113,8 @@ const Header = ({
         </Flex>
       </Flex>
       <Flex style={{ marginTop: "0.5rem" }}>
-        {recipe.tags.map((tag) => (
-          <Tag tag={tag} />
+        {recipe.tags.map((tag, index) => (
+          <Tag key={index} tag={tag} />
         ))}
       </Flex>
     </Flex>
@@ -145,8 +145,12 @@ const ServingAdjustor = ({ updatedServings, setUpdatedServings, recipeSelected }
 const Ingredients = ({ ingredients, originalServings, updatedServings }) => {
   return (
     <Stack style={{ padding: "1rem 0.5rem" }} space={4}>
-      {_.map(ingredients, (ingredient) => {
-        return <Text>{ingredientDescription(ingredient, originalServings, updatedServings)}</Text>;
+      {_.map(ingredients, (ingredient, index) => {
+        return (
+          <Text key={index}>
+            {ingredientDescription(ingredient, originalServings, updatedServings)}
+          </Text>
+        );
       })}
     </Stack>
   );

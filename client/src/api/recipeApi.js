@@ -5,7 +5,7 @@ import store from "../store";
 
 import recipeData from "./recipeFixture.json";
 import { setRecipeList } from "../state/recipeState";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 const dispatch = (payload) => {
   store.dispatch(payload);
@@ -30,9 +30,21 @@ const generatePaginationParam = (offset = 0, limit = DEFAULT_LIMIT) => {
   return `[${offset}..${offset + limit - 1}]`;
 };
 
-const generateFilters = (name = "") => {
+const baseFilter = '*[_type == "recipe"]';
+
+const generateTagFilters = (tags = []) => {
+  if (tags === [] || tags.length === 0) {
+    return baseFilter;
+  }
+
+  const tagsString = tags.map((tag) => `'${tag}' in tags[]->name`).join(" && ");
+
+  return `*[_type == "recipe" && ${tagsString}]`;
+};
+
+const generateNameFilters = (name = "") => {
   if (name === "") {
-    return '*[_type == "recipe"]';
+    return baseFilter;
   }
 
   return `*[_type == "recipe" && name match "${name}*"]`;
@@ -40,23 +52,31 @@ const generateFilters = (name = "") => {
 
 const baseProjection = `{_id,name,servings,tags[]->{name,"color":color.hex},link,"sourceType":source->type,"sourceName":source->name,website,calories,"ingredients":ingredients[]{_id,description,"value":value,"name":ingredientName->name,"namePlural":ingredientName->plural,"unitPlural":unit->plural,"unitSingular":unit->abbreviation}}`;
 
-export const fetchRecipes = (nameFilterTerm, callback) => {
+export const fetchRecipes = (filterType, filter, callback) => {
   if (process.env.REACT_APP_ENVIRONMENT === "production") {
-    fetchRecipesFromApi(nameFilterTerm, callback);
+    fetchRecipesFromApi(filterType, filter, callback);
   } else {
     fetchFixtureData();
   }
 };
 
-const fetchRecipesFromApi = (nameFilterTerm, callback) => {
-  const paginationParam = generatePaginationParam(0, 3);
-  const query =
-    "?query=" +
-    encodeURIComponent(generateFilters(nameFilterTerm)) +
-    paginationParam +
-    baseProjection;
+const chooseQuery = (type = "name") => {
+  if (type === "name") {
+    return generateNameFilters;
+  }
 
-  axios.get(query).then((response) => {
+  return generateTagFilters;
+};
+
+const fetchRecipesFromApi = (filterType, filterTerms, callback) => {
+  const paginationParam = generatePaginationParam(0, 10);
+
+  const filterQuery = chooseQuery(filterType);
+
+  const fullQuery =
+    "?query=" + encodeURIComponent(filterQuery(filterTerms)) + paginationParam + baseProjection;
+
+  axios.get(fullQuery).then((response) => {
     dispatch(setRecipeList(response.data.result));
     if (!_.isNil(callback)) callback();
   });
