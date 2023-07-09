@@ -130,7 +130,7 @@ const ServingAdjustor = ({ updatedServings, setUpdatedServings, recipeSelected }
         <Text
           style={{ textAlign: "center", margin: "0 0.8rem", minWidth: "5rem", lineHeight: 1.75 }}
         >
-          {`${updatedServings} servings`}
+          {`${updatedServings} ${updatedServings > 1 ? "servings" : "serving"}`}
         </Text>
         <Icon
           size="small"
@@ -164,9 +164,9 @@ const Tag = ({ tag }) => {
         fontWeight: "bold",
         padding: "0.4rem 0.7rem",
         marginRight: "0.5rem",
-        color: "#fff",
         borderRadius: "100rem",
         backgroundColor: `${tag.color}`,
+        color: "black",
       }}
     >
       {tag.name}
