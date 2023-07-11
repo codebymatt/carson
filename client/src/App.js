@@ -25,6 +25,7 @@ import ShoppingList from "./components/shoppingList";
 import { scaledValue } from "./utils/ingredientDescription";
 import FilterInput from "./components/filter";
 import { setAvailableTags } from "./state/filterState";
+import Planner from "./components/planner";
 
 function App() {
   axios.defaults.baseURL = process.env.REACT_APP_SANITY_BASE_URL;
@@ -103,7 +104,7 @@ function App() {
       <PageWrapper>
         <Box marginTop={4}>
           <Flex justify={"space-between"} align="center" style={{ minHeight: "2.5rem" }}>
-            <TabToggle tabId={tabId} setTabId={setTabId} />
+            <TabPicker tabId={tabId} setTabId={setTabId} />
             {tabId === "recipes" && (
               <Button
                 disabled={shoppingListPresent}
@@ -112,7 +113,7 @@ function App() {
                 onClick={() => generateShoppingList()}
               />
             )}
-            {tabId !== "recipes" && (
+            {tabId === "shoppingList" && (
               <Flex>
                 <Button
                   style={{
@@ -138,9 +139,15 @@ function App() {
               </Flex>
             )}
           </Flex>
-          <Card shadow={1} padding={4} radius={2} marginTop={4}>
+          <Card
+            shadow={tabId === "shoppingList" ? 1 : 0}
+            padding={tabId === "shoppingList" ? 4 : 0}
+            radius={2}
+            marginTop={4}
+          >
             <RecipeTab tabId={tabId} />
             <ShoppingListTab tabId={tabId} hideChecked={hideChecked} />
+            <WeeklyPlannerTab tabId={tabId} />
           </Card>
         </Box>
       </PageWrapper>
@@ -155,17 +162,18 @@ const PageWrapper = styled.div`
   margin: 0 auto;
 `;
 
-const TabToggle = ({ tabId, setTabId }) => {
-  const switchToShoppingList = () => {
-    setTabId("shoppingList");
-  };
-
+const TabPicker = ({ tabId, setTabId }) => {
   return (
     <TabList space={2}>
       <Tab label="Recipes" onClick={() => setTabId("recipes")} selected={tabId === "recipes"} />
       <Tab
+        label="Weekly Planner"
+        onClick={() => setTabId("weeklyPlanner")}
+        selected={tabId === "weeklyPlanner"}
+      />
+      <Tab
         label="Shopping List"
-        onClick={switchToShoppingList}
+        onClick={() => setTabId("shoppingList")}
         selected={tabId === "shoppingList"}
       />
     </TabList>
@@ -190,6 +198,14 @@ const ShoppingListTab = ({ tabId, hideChecked }) => {
   return (
     <TabPanel hidden={tabId !== "shoppingList"}>
       <ShoppingList hideChecked={hideChecked} />
+    </TabPanel>
+  );
+};
+
+const WeeklyPlannerTab = ({ tabId }) => {
+  return (
+    <TabPanel hidden={tabId !== "weeklyPlanner"}>
+      <Planner />
     </TabPanel>
   );
 };
