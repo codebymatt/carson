@@ -19,8 +19,8 @@ const keyCodes = {
 const delimiters = [keyCodes.comma, keyCodes.enter, keyCodes.space];
 
 // TODO: Use tab panel to switch search types.
-const FilterInput = ({ _type }) => {
-  const [filterType, setFilterType] = useState("text");
+const FilterInput = ({ type }) => {
+  const [filterType, setFilterType] = useState(type);
   const name = useSelector((state) => state.filters.name);
   const setName = (name) => store.dispatch(setNameFilterTerm(name));
 

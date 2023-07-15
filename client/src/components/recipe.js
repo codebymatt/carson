@@ -8,28 +8,60 @@ import {
   FiChevronDown,
   FiChevronRight,
   FiExternalLink,
+  FiPlus,
+  FiX,
 } from "react-icons/fi";
 
 import RadioButton from "./shared/RadioButton";
 import Icon from "./shared/Icon";
-import { updateRecipeInList } from "../state/recipeState";
+import {
+  addSelectedRecipe,
+  removeSelectedRecipe,
+  updateRecipeInList,
+  updateServingsAvailable,
+} from "../state/recipeState";
 import { useSelector } from "react-redux";
 import store from "../store";
 import { ingredientDescription } from "../utils/ingredientDescription";
 
-const Recipe = ({ recipe }) => {
-  const recipeSelected = useSelector((state) => state.recipes.list[recipe.id].selected);
+const Recipe = ({ recipe, selected }) => {
+  // const recipeSelected = useSelector((state) => state.recipes.list[recipe._id].selected);
+  // const [recipeSelected, setRecipeSelected] = useState(false);
   const [opened, setOpened] = useState(false);
   const [updatedServings, setUpdatedServings] = useState(recipe.servings);
 
-  const setRecipeSelected = () => {
-    store.dispatch(
-      updateRecipeInList({
-        ...recipe,
-        selected: !recipeSelected,
-        updatedServings: updatedServings,
-      }),
-    );
+  const selectRecipe = (recipe) => {
+    store.dispatch(addSelectedRecipe(recipe));
+  };
+
+  const deselectRecipe = (id) => store.dispatch(removeSelectedRecipe(id));
+
+  // const selectRecipe = () => {
+  //   // We're toggling this to the opposite of the existing value.
+  //   if (!recipeSelected) {
+  //     store.dispatch(addSelectedRecipe(recipe));
+  //   } else {
+  //     store.dispatch(removeSelectedRecipe(recipe.id));
+  //   }
+
+  //   // updateRecipeInList({
+  //   //   ...recipe,
+  //   //   selected: selected,
+  //   //   updatedServings: updatedServings,
+  //   // }),
+  //   // );
+
+  //   // if (selected) {
+  //   //   store.dispatch(addSelectedRecipe(recipe));
+  //   // } else {
+  //   //   store.dispatch(removeSelectedRecipe(recipe.id));
+  //   // }
+  // };
+
+  const updateServings = (recipeId, delta) => {
+    if (delta != 0) {
+      store.dispatch(updateServingsAvailable({ recipeId, delta }));
+    }
   };
 
   useEffect(() => {
@@ -47,12 +79,13 @@ const Recipe = ({ recipe }) => {
     <Card shadow={1} radius={2} padding={2} marginTop={3}>
       <Header
         recipe={recipe}
-        recipeSelected={recipeSelected}
-        setRecipeSelected={setRecipeSelected}
+        selectRecipe={selectRecipe}
+        deselectRecipe={deselectRecipe}
         recipeOpened={opened}
         setRecipeOpened={setOpened}
         updatedServings={updatedServings}
-        setUpdatedServings={setUpdatedServings}
+        updateServings={updateServings}
+        selected={selected}
       />
       <Box display={opened ? "flex" : "none"}>
         <Ingredients
@@ -69,12 +102,13 @@ export default Recipe;
 
 const Header = ({
   recipe,
-  recipeSelected,
-  setRecipeSelected,
   recipeOpened,
   setRecipeOpened,
   updatedServings,
-  setUpdatedServings,
+  updateServings,
+  selected,
+  selectRecipe,
+  deselectRecipe,
 }) => {
   const showSource = (isNil(recipe.website) || !recipe.website) && !isNil(recipe.sourceType);
 
@@ -92,12 +126,14 @@ const Header = ({
             />
           </IconWrapper>
         </Flex>
-        <ServingAdjustor
-          style={{ width: "30%" }}
-          updatedServings={updatedServings}
-          setUpdatedServings={setUpdatedServings}
-          recipeSelected={recipeSelected}
-        />
+        {selected && (
+          <ServingAdjustor
+            style={{ width: "30%" }}
+            recipeId={recipe.id}
+            servings={updatedServings}
+            updateServings={updateServings}
+          />
+        )}
         <Flex align="center" justify="flex-end" style={{ width: "30%" }}>
           {showSource && (
             <Badge padding={2} style={{ marginRight: "1rem" }} tone="default">
@@ -109,7 +145,22 @@ const Header = ({
               <LinkIcon icon={<FiExternalLink />} label="Recipe link" size="small" />
             </LinkWrapper>
           )}
-          <RadioButton selected={recipeSelected} setSelected={setRecipeSelected} />
+          {!selected && (
+            <Icon
+              icon={<FiPlus />}
+              label="Add to meal plan"
+              size="small"
+              handleFunc={() => selectRecipe(recipe)}
+            />
+          )}
+          {selected && (
+            <Icon
+              icon={<FiX />}
+              label="Remove from meal plan"
+              size="small"
+              handleFunc={() => deselectRecipe(recipe.id)}
+            />
+          )}
         </Flex>
       </Flex>
       <Flex style={{ marginTop: "0.5rem" }}>
@@ -121,24 +172,16 @@ const Header = ({
   );
 };
 
-const ServingAdjustor = ({ updatedServings, setUpdatedServings, recipeSelected }) => {
-  const decrease = () => (updatedServings > 1 ? setUpdatedServings(updatedServings - 1) : null);
+const ServingAdjustor = ({ recipeId, servings, updateServings }) => {
+  const decrease = () => (servings > 1 ? updateServings(recipeId, -1) : null);
   return (
-    recipeSelected && (
-      <Flex style={{ marginRight: "1rem" }}>
-        <Icon size="small" icon={<FiMinusCircle />} handleFunc={() => decrease()} />
-        <Text
-          style={{ textAlign: "center", margin: "0 0.8rem", minWidth: "5rem", lineHeight: 1.75 }}
-        >
-          {`${updatedServings} ${updatedServings > 1 ? "servings" : "serving"}`}
-        </Text>
-        <Icon
-          size="small"
-          icon={<FiPlusCircle />}
-          handleFunc={() => setUpdatedServings(updatedServings + 1)}
-        />
-      </Flex>
-    )
+    <Flex style={{ marginRight: "1rem" }}>
+      <Icon size="small" icon={<FiMinusCircle />} handleFunc={() => decrease()} />
+      <Text style={{ textAlign: "center", margin: "0 0.8rem", minWidth: "5rem", lineHeight: 1.75 }}>
+        {`${servings} ${servings > 1 ? "servings" : "serving"}`}
+      </Text>
+      <Icon size="small" icon={<FiPlusCircle />} handleFunc={() => updateServings(recipeId, 1)} />
+    </Flex>
   );
 };
 
@@ -180,7 +223,6 @@ const IconWrapper = styled.div`
 `;
 
 const LinkWrapper = styled.a`
-  margin-top: 0.25rem;
   margin-right: 1rem;
   color: black;
   text-decoration: none;

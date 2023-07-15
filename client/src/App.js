@@ -12,6 +12,7 @@ import {
   Button,
   Card,
   Flex,
+  Heading,
   studioTheme,
   Tab,
   TabList,
@@ -31,10 +32,11 @@ function App() {
   axios.defaults.baseURL = process.env.REACT_APP_SANITY_BASE_URL;
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
-  const [tabId, setTabId] = useState("recipes");
+  const [tabId, setTabId] = useState("searchRecipes");
   const [hideChecked, setHideChecked] = useState(false);
 
-  const recipes = useSelector((state) => state.recipes.list);
+  // const recipes = useSelector((state) => state.recipes.list);
+  const selectedRecipes = useSelector((state) => state.recipes.selectedRecipes);
   const nameFilterTerm = useSelector((state) => state.filters.name);
   const tagFilters = useSelector((state) => state.filters.tags);
   const shoppingList = useSelector((state) => state.shoppingList.list);
@@ -44,7 +46,7 @@ function App() {
 
   const generateShoppingList = () => {
     const ingredientList = _.reduce(
-      recipes,
+      selectedRecipes,
       (memo, recipe, _recipeId) => {
         if (recipe.selected) {
           recipe.ingredients.forEach((ingredient) => {
@@ -105,7 +107,7 @@ function App() {
         <Box marginTop={4}>
           <Flex justify={"space-between"} align="center" style={{ minHeight: "2.5rem" }}>
             <TabPicker tabId={tabId} setTabId={setTabId} />
-            {tabId === "recipes" && (
+            {tabId === "searchRecipes" && (
               <Button
                 disabled={shoppingListPresent}
                 tone="positive"
@@ -145,7 +147,8 @@ function App() {
             radius={2}
             marginTop={4}
           >
-            <RecipeTab tabId={tabId} />
+            <SearchRecipesTab tabId={tabId} />
+            <SelectedRecipesTab tabId={tabId} />
             <ShoppingListTab tabId={tabId} hideChecked={hideChecked} />
             <WeeklyPlannerTab tabId={tabId} />
           </Card>
@@ -165,7 +168,16 @@ const PageWrapper = styled.div`
 const TabPicker = ({ tabId, setTabId }) => {
   return (
     <TabList space={2}>
-      <Tab label="Recipes" onClick={() => setTabId("recipes")} selected={tabId === "recipes"} />
+      <Tab
+        label="Search Recipes"
+        onClick={() => setTabId("searchRecipes")}
+        selected={tabId === "searchRecipes"}
+      />
+      <Tab
+        label="Selected Recipes"
+        onClick={() => setTabId("selectedRecipes")}
+        selected={tabId === "selectedRecipes"}
+      />
       <Tab
         label="Weekly Planner"
         onClick={() => setTabId("weeklyPlanner")}
@@ -180,14 +192,54 @@ const TabPicker = ({ tabId, setTabId }) => {
   );
 };
 
-const RecipeTab = ({ tabId }) => {
-  const recipes = useSelector((state) => state.recipes.list);
+const SearchRecipesTab = ({ tabId }) => {
+  const [recipes, setRecipes] = useState([]);
+  const storedSearchedRecipes = useSelector((state) => state.recipes.searchedRecipes);
+  const storedSelectedRecipes = useSelector((state) => state.recipes.selectedRecipes);
+
+  useEffect(() => {
+    const searchedRecipes = _.values(storedSearchedRecipes);
+    const joinedRecipes = [];
+
+    searchedRecipes.forEach((recipe) => {
+      if (
+        storedSelectedRecipes[recipe.id] === null ||
+        storedSelectedRecipes[recipe.id] === undefined
+      ) {
+        joinedRecipes.push(recipe);
+      }
+    });
+
+    setRecipes(joinedRecipes);
+  }, [storedSelectedRecipes, storedSearchedRecipes]);
   return (
-    <TabPanel hidden={tabId !== "recipes"}>
-      <FilterInput type="tags" />
+    <TabPanel hidden={tabId !== "searchRecipes"}>
+      <FilterInput type="text" />
       <Box>
         {_.map(recipes, (recipe, index) => {
-          return <Recipe key={index} recipe={recipe} />;
+          return <Recipe key={index} recipe={recipe} selected={false} />;
+        })}
+      </Box>
+    </TabPanel>
+  );
+};
+
+const SelectedRecipesTab = ({ tabId }) => {
+  const recipes = useSelector((state) => state.recipes.selectedRecipes);
+
+  if (Object.keys(recipes).length === 0) {
+    return (
+      <TabPanel hidden={tabId !== "selectedRecipes"}>
+        <Heading>Select some recipes for your meal plan, then come back here!</Heading>
+      </TabPanel>
+    );
+  }
+
+  return (
+    <TabPanel hidden={tabId !== "selectedRecipes"}>
+      <Box>
+        {_.map(_.values(recipes), (recipe, index) => {
+          return <Recipe key={index} recipe={recipe} selected={true} />;
         })}
       </Box>
     </TabPanel>

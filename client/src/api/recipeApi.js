@@ -4,7 +4,7 @@ import _ from "lodash";
 import store from "../store";
 
 import recipeData from "./recipeFixture.json";
-import { setRecipeList } from "../state/recipeState";
+import { setSearchedRecipes } from "../state/recipeState";
 // import { useSelector } from "react-redux";
 
 const dispatch = (payload) => {
@@ -77,11 +77,11 @@ const fetchRecipesFromApi = (filterType, filterTerms, callback) => {
     "?query=" + encodeURIComponent(filterQuery(filterTerms)) + paginationParam + baseProjection;
 
   axios.get(fullQuery).then((response) => {
-    dispatch(setRecipeList(response.data.result));
+    dispatch(setSearchedRecipes(response.data.result));
     if (!_.isNil(callback)) callback();
   });
 };
 
 const fetchFixtureData = () => {
-  dispatch(setRecipeList(recipeData.result));
+  dispatch(setSearchedRecipes(recipeData.result));
 };

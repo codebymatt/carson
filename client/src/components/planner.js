@@ -7,7 +7,7 @@ import RadioButton from "./shared/RadioButton";
 import Icon from "./shared/Icon";
 import { updateRecipeInList } from "../state/recipeState";
 import { useSelector } from "react-redux";
-// import store from "../store";
+import store from "../store";
 import { ingredientDescription } from "../utils/ingredientDescription";
 import { FiMinusCircle, FiPlusCircle, FiX, FiXCircle } from "react-icons/fi";
 
@@ -15,11 +15,12 @@ const COLUMN_NAMES = ["Breakfast", "Lunch", "Dinner"];
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 const Planner = () => {
+  const availableRecipes = useSelector((state) => state.recipes.selectedRecipes);
   return (
     <Flex direction="column">
       {/* <HeaderRow /> */}
       {WEEKDAYS.map((weekday, index) => (
-        <Day weekday={weekday} />
+        <Day weekday={weekday} availableRecipes={availableRecipes} />
       ))}
     </Flex>
   );
@@ -27,7 +28,43 @@ const Planner = () => {
 
 export default Planner;
 
-const Day = ({ weekday }) => {
+const generateServingsArray = (count) => {
+  console.log("count: " + count);
+  const ary = [];
+  for (var i = 1; i <= count; i++) {
+    ary.push(i);
+  }
+  console.log("count: " + ary);
+  return ary;
+};
+
+const Day = ({ weekday, availableRecipes }) => {
+  const [recipeID, setRecipeID] = useState("");
+  const [availableServingCount, setAvailableServingCount] = useState(0);
+  const [servingCount, setServingCount] = useState(0);
+  const [servingArray, setServingArray] = useState([]);
+  const [selectedRecipe, setSelectedRecipe] = useState();
+
+  const handleSelection = (event) => {
+    const id = event.target.value;
+    console.log("servings: " + availableRecipes[id].servings);
+    setRecipeID(id);
+    setSelectedRecipe(availableRecipes[id]);
+    setAvailableServingCount(availableRecipes[id].servings);
+    setServingArray(generateServingsArray(availableRecipes[id].servings));
+  };
+
+  // const selectedServings = [];
+  // if (recipeID != "") {
+  //   for (const i = 0; i < selectedRecipe.servings; i++) {
+  //     selectedServings += i;
+  //   }
+  // }
+
+  useEffect(() => {
+    setSelectedRecipe(availableRecipes[recipeID]);
+  }, [availableRecipes]);
+
   return (
     <DayWrapper>
       <TitleWrapper>
@@ -41,17 +78,21 @@ const Day = ({ weekday }) => {
               <MealWrapper>
                 <MealName>{name}</MealName>
                 <SelectWrapper>
-                  <Select fontSize={2}>
-                    <option> </option>
+                  <Select onChange={handleSelection} fontSize={2}>
+                    <option></option>
+                    {_.keys(availableRecipes).map((recipeID) => {
+                      console.log(recipeID);
+                      const recipe = availableRecipes[recipeID];
+                      return <option value={recipeID}>{recipe.name}</option>;
+                    })}
                     <option>OUT</option>
                   </Select>
                   <QuantityWrapper>
                     <Select>
-                      <option> </option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>14</option>
+                      <option value={0}>0</option>
+                      {servingArray.map((num) => (
+                        <option value={num}>{num}</option>
+                      ))}
                     </Select>
                   </QuantityWrapper>
                 </SelectWrapper>
