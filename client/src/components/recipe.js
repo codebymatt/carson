@@ -12,13 +12,13 @@ import {
   FiX,
 } from "react-icons/fi";
 
-import RadioButton from "./shared/RadioButton";
+// import RadioButton from "./shared/RadioButton";
 import Icon from "./shared/Icon";
 import {
   addSelectedRecipe,
   removeSelectedRecipe,
   updateRecipeInList,
-  updateServingsAvailable,
+  updateServingsRemaining,
 } from "../state/recipeState";
 import { useSelector } from "react-redux";
 import store from "../store";
@@ -60,7 +60,7 @@ const Recipe = ({ recipe, selected }) => {
 
   const updateServings = (recipeId, delta) => {
     if (delta != 0) {
-      store.dispatch(updateServingsAvailable({ recipeId, delta }));
+      store.dispatch(updateServingsRemaining({ recipeId, delta }));
     }
   };
 

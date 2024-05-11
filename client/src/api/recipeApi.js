@@ -33,7 +33,7 @@ const generatePaginationParam = (offset = 0, limit = DEFAULT_LIMIT) => {
 const baseFilter = '*[_type == "recipe"]';
 
 const generateTagFilters = (tags = []) => {
-  if (tags === [] || tags.length === 0) {
+  if (tags.length === 0) {
     return baseFilter;
   }
 

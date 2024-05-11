@@ -18,7 +18,7 @@ export default {
       type: "string",
     },
     {
-      title: "plural",
+      title: "Plural",
       name: "plural",
       type: "string",
     },
@@ -27,7 +27,7 @@ export default {
       name: "type",
       type: "string",
       options: {
-        list: ["other", "weight", "volume"],
+        list: ["other", "weight", "volume", "quantity"],
         layout: "radio",
       },
     },
